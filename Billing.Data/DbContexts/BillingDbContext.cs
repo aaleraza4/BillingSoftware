@@ -15,5 +15,10 @@ namespace Billing.Data.DbContexts
 
         }
         public DbSet<SuperadminAccount> superadminAccounts { get; set; }
+        public DbSet<Bill> Bills { get; set; }
+        public DbSet<Quotation> Quotations { get; set; }
+        public DbSet<SpareParts> SpareParts { get; set; }
+        public DbSet<Tax> Taxes { get; set; }
+        public DbSet<Organization> Organizations { get; set; }
     }
 }
