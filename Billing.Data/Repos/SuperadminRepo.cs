@@ -1,5 +1,5 @@
 ﻿using Billing.Data.DbContexts;
-using Billing.Data.EFRepository;
+using Billing.Data.Repository;
 using Billing.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;

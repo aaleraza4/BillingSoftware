@@ -1,11 +1,12 @@
 ﻿using Billing.Business.DbInitializer;
 using Billing.Data.DbContexts;
-using Billing.Data.EFRepository;
+using Billing.Data.Repository;
 using Billing.Data.Repos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Billing.Business.Services;
 
 namespace BillingSoftware.ServiceRegister
 {
@@ -26,20 +27,31 @@ namespace BillingSoftware.ServiceRegister
                                   ));
 
 
-      
+
             // configure DI for application services
             services.AddControllers().AddJsonOptions(opt => opt.JsonSerializerOptions.PropertyNamingPolicy = null);
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
             services.AddHttpContextAccessor();
-
             #region @@@[------Services]
+            services.AddScoped<IBillService, BillService>();
+            services.AddScoped<IOrganizationService, OrganizationService>();
+            services.AddScoped<IQuotationService, QuotationService>();
+            services.AddScoped<ISparePartsService, SparePartsService>();
+            services.AddScoped<ITaxService, TaxService>();
             #endregion
 
             #region @@@[------Repository]
             services.AddScoped<ISuperadminRepo, SuperadminRepo>();
+            services.AddScoped<IBillRepo, BillRepo>();
+            services.AddScoped<IOrganizationRepo, OrganizationRepo>();
+            services.AddScoped<IQuotationRepo, QuotationRepo>();
+            services.AddScoped<ISparePartsRepo, SparePartsRepo>();
+            services.AddScoped<ITaxRepo, TaxRepo>();
             #endregion
+            services.AddAutoMapper(typeof(Startup));
+
 
         }
     }

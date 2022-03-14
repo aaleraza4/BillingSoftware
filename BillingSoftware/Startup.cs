@@ -1,5 +1,6 @@
 using Billing.Business.DbInitializer;
 using Billing.Common.Utils;
+using Billing.DTOs.DTOs;
 using BillingSoftware.ServiceRegister;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

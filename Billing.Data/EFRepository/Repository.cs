@@ -1,4 +1,5 @@
-﻿using Billing.Data.Entities;
+﻿using Billing.Data.DbContexts;
+using Billing.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,14 +8,14 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Billing.Data.EFRepository
+namespace Billing.Data.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity>
      where TEntity : class
     {
-        private readonly DbContext _dbContext;
+        protected readonly BillingDbContext _dbContext;
 
-        public Repository(DbContext dbContext)
+        public Repository(BillingDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -76,10 +77,11 @@ namespace Billing.Data.EFRepository
         }
         public async Task DeleteRange<T>(List<T> ids, bool isSaveChanges = true)
         {
-            foreach (var item in ids)
-            {
-                await Delete(item, isSaveChanges);
-            }
+            ids.ForEach(async item=> await Delete(item,isSaveChanges));
+            //foreach (var item in ids)
+            //{
+            //    await Delete(item, isSaveChanges);
+            //}
         }
         public async Task Save()
         {
@@ -112,8 +114,9 @@ namespace Billing.Data.EFRepository
 
         public async Task AddRangeAsync(List<TEntity> entities, bool isSaveChanges = true)
         {
-            foreach (var item in entities)
-                SetCreateAnalysisValue(item);
+            entities.ForEach(item => SetCreateAnalysisValue(item));
+            //foreach (var item in entities)
+            //    SetCreateAnalysisValue(item);
             await _dbContext.AddRangeAsync(entities);
             if (isSaveChanges)
                 await Save();
@@ -128,8 +131,9 @@ namespace Billing.Data.EFRepository
 
         public async Task ChangeRange(List<TEntity> entities, bool isSaveChanges = true)
         {
-            foreach (var item in entities)
-                SetUpdateAnalysisValue(item, false);
+            entities.ForEach(item => SetUpdateAnalysisValue(item,false));
+            //foreach (var item in entities)
+            //    SetUpdateAnalysisValue(item, false);
             _dbContext.Set<TEntity>().UpdateRange(entities);
             if (isSaveChanges)
                 await Save();

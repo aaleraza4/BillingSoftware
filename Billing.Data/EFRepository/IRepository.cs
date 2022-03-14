@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Billing.Data.EFRepository
+namespace Billing.Data.Repository
 {
     public interface IRepository<TEntity> where TEntity : class
     {
