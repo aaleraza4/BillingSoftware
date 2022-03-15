@@ -13,11 +13,11 @@ namespace Billing.Business.AutoMapper
     {
         public AutoMapper()
         {
-            CreateMap<Bill, BillDTO>();
-            CreateMap<Organization, OrganizationDTO>();
-            CreateMap<Quotation, QuotationDTO>();
-            CreateMap<SpareParts, SparePartDTO>();
-            CreateMap<Tax, TaxDTO>();
+            CreateMap<Bill, BillDTO>().ReverseMap();
+            CreateMap<Organization, OrganizationDTO>().ReverseMap();
+            CreateMap<Quotation, QuotationDTO>().ReverseMap();
+            CreateMap<SpareParts, SparePartDTO>().ReverseMap();
+            CreateMap<Tax, TaxDTO>().ReverseMap();
 
         }
     }

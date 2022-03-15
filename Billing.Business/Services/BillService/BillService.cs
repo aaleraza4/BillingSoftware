@@ -42,12 +42,6 @@ namespace Billing.Business.Services
             bill.RepairAmount = entity.RepairAmount;
             bill.IsAactive = entity.IsAactive;
             bill.Status = entity.Status;
-            bill.CreatedDate = entity.CreatedDate;
-            bill.CreatedBy = entity.CreatedBy;
-            bill.UpdatedDate = entity.UpdatedDate;
-            bill.UpdatedBy = entity.UpdatedBy;
-            bill.DeletedDate = entity.DeletedDate;
-            bill.DeletedBy = entity.DeletedBy;
             bill.IsDeleted = entity.IsDeleted;
             if (entity.Id == 0)
             {

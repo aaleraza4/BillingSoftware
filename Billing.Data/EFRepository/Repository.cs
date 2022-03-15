@@ -13,9 +13,9 @@ namespace Billing.Data.Repository
     public class Repository<TEntity> : IRepository<TEntity>
      where TEntity : class
     {
-        protected readonly BillingDbContext _dbContext;
+        private readonly DbContext _dbContext;
 
-        public Repository(BillingDbContext dbContext)
+        public Repository(DbContext dbContext)
         {
             _dbContext = dbContext;
         }
