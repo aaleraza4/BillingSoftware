@@ -10,6 +10,7 @@ using Billing.Business.Services;
 using Billing.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using BillingSoftware.Middlewares;
+using Billing.Business.AutoMapper;
 
 namespace BillingSoftware.ServiceRegister
 {
@@ -60,7 +61,7 @@ namespace BillingSoftware.ServiceRegister
             services.AddScoped<ISparePartsRepo, SparePartsRepo>();
             services.AddScoped<ITaxRepo, TaxRepo>();
             #endregion
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 
         }

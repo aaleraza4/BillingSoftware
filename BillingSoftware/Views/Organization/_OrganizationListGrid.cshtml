@@ -1,0 +1,44 @@
+﻿@model IList<Billing.DTOs.DTOs.OrganizationDTO>;
+@using Billing.Common.Helper;
+@{
+
+    var _inc = 1;
+}
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model?.Count() > 0)
+            {
+                @foreach (var item in Model)
+                {
+            <tr>
+                <td width="5%" class="text-center">@_inc</td>
+                <td>@item?.Name</td>
+                <td>@item?.OrganizationType?.GetEnumDescription()</td>
+                <td>
+                    <a href='@Url.Action("EditOrganization", "Organization",new { id=item?.Id})'>
+                        <span>Edit</span>
+                    </a>
+                </td>
+                <td>
+                    <a href='@Url.Action("DeleteOrganization", "Organization",new { id=item?.Id})'>
+                        <span>Delete</span>
+                    </a>
+                </td>
+            </tr>
+                    _inc = _inc + 1;
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
