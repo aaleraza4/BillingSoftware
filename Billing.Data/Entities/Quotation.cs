@@ -21,5 +21,14 @@ namespace Billing.Data.Entities
         public int RepairAmount { get; set; }
         public bool IsAactive { get; set; }
         public string Status { get; set; }
+
+        [ForeignKey("FK_billing_organization")]
+        public long OrganizationId { get; set; }
+
+        public ICollection<Tax> Taxs { get; set; }
+        public ICollection<SpareParts> SpareParts { get; set; }
+
+
+
     }
 }

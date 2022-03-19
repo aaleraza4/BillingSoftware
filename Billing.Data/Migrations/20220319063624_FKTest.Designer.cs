@@ -4,50 +4,22 @@ using Billing.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Billing.Data.Migrations
 {
     [DbContext(typeof(BillingDbContext))]
-    partial class BillingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220319063624_FKTest")]
+    partial class FKTest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.14")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("BillSpareParts", b =>
-                {
-                    b.Property<long>("BillsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SparePartsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("BillsId", "SparePartsId");
-
-                    b.HasIndex("SparePartsId");
-
-                    b.ToTable("BillSpareParts");
-                });
-
-            modelBuilder.Entity("BillTax", b =>
-                {
-                    b.Property<long>("BillsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("TaxsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("BillsId", "TaxsId");
-
-                    b.HasIndex("TaxsId");
-
-                    b.ToTable("BillTax");
-                });
 
             modelBuilder.Entity("Billing.Data.Entities.Bill", b =>
                 {
@@ -89,9 +61,6 @@ namespace Billing.Data.Migrations
                     b.Property<string>("Organization")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("OrganizationId")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -114,8 +83,6 @@ namespace Billing.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrganizationId");
 
                     b.ToTable("billing_bill");
                 });
@@ -157,53 +124,6 @@ namespace Billing.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("billing_organization");
-                });
-
-            modelBuilder.Entity("Billing.Data.Entities.Payment", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long>("BillId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool?>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PaymentType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ReferenceNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("float");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BillId");
-
-                    b.ToTable("billing_payment");
                 });
 
             modelBuilder.Entity("Billing.Data.Entities.Quotation", b =>
@@ -406,84 +326,6 @@ namespace Billing.Data.Migrations
                     b.ToTable("billing_tax");
                 });
 
-            modelBuilder.Entity("QuotationSpareParts", b =>
-                {
-                    b.Property<long>("QuotationsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SparePartsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("QuotationsId", "SparePartsId");
-
-                    b.HasIndex("SparePartsId");
-
-                    b.ToTable("QuotationSpareParts");
-                });
-
-            modelBuilder.Entity("QuotationTax", b =>
-                {
-                    b.Property<long>("QuotationsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("TaxsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("QuotationsId", "TaxsId");
-
-                    b.HasIndex("TaxsId");
-
-                    b.ToTable("QuotationTax");
-                });
-
-            modelBuilder.Entity("BillSpareParts", b =>
-                {
-                    b.HasOne("Billing.Data.Entities.Bill", null)
-                        .WithMany()
-                        .HasForeignKey("BillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Billing.Data.Entities.SpareParts", null)
-                        .WithMany()
-                        .HasForeignKey("SparePartsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BillTax", b =>
-                {
-                    b.HasOne("Billing.Data.Entities.Bill", null)
-                        .WithMany()
-                        .HasForeignKey("BillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Billing.Data.Entities.Tax", null)
-                        .WithMany()
-                        .HasForeignKey("TaxsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Billing.Data.Entities.Bill", b =>
-                {
-                    b.HasOne("Billing.Data.Entities.Organization", null)
-                        .WithMany("Bills")
-                        .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Billing.Data.Entities.Payment", b =>
-                {
-                    b.HasOne("Billing.Data.Entities.Bill", null)
-                        .WithMany("Payments")
-                        .HasForeignKey("BillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Billing.Data.Entities.Quotation", b =>
                 {
                     b.HasOne("Billing.Data.Entities.Organization", null)
@@ -493,45 +335,8 @@ namespace Billing.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("QuotationSpareParts", b =>
-                {
-                    b.HasOne("Billing.Data.Entities.Quotation", null)
-                        .WithMany()
-                        .HasForeignKey("QuotationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Billing.Data.Entities.SpareParts", null)
-                        .WithMany()
-                        .HasForeignKey("SparePartsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("QuotationTax", b =>
-                {
-                    b.HasOne("Billing.Data.Entities.Quotation", null)
-                        .WithMany()
-                        .HasForeignKey("QuotationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Billing.Data.Entities.Tax", null)
-                        .WithMany()
-                        .HasForeignKey("TaxsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Billing.Data.Entities.Bill", b =>
-                {
-                    b.Navigation("Payments");
-                });
-
             modelBuilder.Entity("Billing.Data.Entities.Organization", b =>
                 {
-                    b.Navigation("Bills");
-
                     b.Navigation("Quotations");
                 });
 #pragma warning restore 612, 618

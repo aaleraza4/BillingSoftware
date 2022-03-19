@@ -12,5 +12,8 @@ namespace Billing.Data.Entities
     {
         public string Name { get; set; }
         public int Price { get; set; }
+        public ICollection<Quotation> Quotations{ get; set; }
+        public ICollection<Bill> Bills { get; set; }
+
     }
 }

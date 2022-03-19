@@ -12,5 +12,8 @@ namespace Billing.Data.Entities
     {
         public string Type { get; set; }
         public double Percent { get; set; }
+        public ICollection<Quotation> Quotations { get; set; }
+        public ICollection<Bill> Bills { get; set; }
+
     }
 }
