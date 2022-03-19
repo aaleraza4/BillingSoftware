@@ -10,28 +10,15 @@ using System.Threading.Tasks;
 
 namespace Billing.Data.Repos
 {
-    public class SuperadminRepo : Repository<SuperadminAccount>, ISuperadminRepo
+    public class SuperadminRepo : Repository<Users>, ISuperadminRepo
     {
         public SuperadminRepo(BillingDbContext billingDbContext) : base(billingDbContext)
         {
 
         }
-        public async Task<SuperadminAccount> CheckSuperadminEmailExist(string Email)
+        public async Task<Users> CheckSuperadminEmailExist(string Email)
         {
             return await GetAll().Where(x => x.Email.ToLower() == Email.ToLower()).FirstOrDefaultAsync();
-        }
-
-        public async Task<long> CreateSuperadminAccount(SuperadminAccount FrontEndmodel)
-        {
-            FrontEndmodel = FrontEndmodel == null ? new SuperadminAccount() : FrontEndmodel;
-            FrontEndmodel.IsActive = true;
-            FrontEndmodel.FirstName = FrontEndmodel.LastName;
-            FrontEndmodel.LastName = FrontEndmodel.FirstName;
-            FrontEndmodel.Email = FrontEndmodel.Email;
-            FrontEndmodel.Username = FrontEndmodel.Username;
-            FrontEndmodel.Password = FrontEndmodel.Password;
-            await Add(FrontEndmodel);
-            return FrontEndmodel.Id;
         }
     }
 }

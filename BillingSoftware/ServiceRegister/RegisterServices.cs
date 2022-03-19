@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Billing.Business.Services;
+using Billing.Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using BillingSoftware.Middlewares;
 
 namespace BillingSoftware.ServiceRegister
 {
@@ -25,8 +28,15 @@ namespace BillingSoftware.ServiceRegister
               options.UseSqlServer(
                   configuration.GetConnectionString("DefaultConnection")
                                   ));
-
-
+            services.AddIdentity<Users, Roles>(option =>
+            {
+                option.Password.RequireDigit = false;
+                option.Password.RequiredLength = 8;
+                option.Password.RequireNonAlphanumeric = true;
+                option.Password.RequireUppercase = false;
+                option.Password.RequireLowercase = false;
+            }).AddEntityFrameworkStores<BillingDbContext>();
+            services.AddScoped<IUserClaimsPrincipalFactory<Users>, MyUserClaimsPrincipalFactory>();
 
             // configure DI for application services
             services.AddControllers().AddJsonOptions(opt => opt.JsonSerializerOptions.PropertyNamingPolicy = null);

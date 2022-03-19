@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Billing.Data.Entities
 {
 
-    [Table("billing_superadmin_account")]
-    public class SuperadminAccount : BaseEntity
+    public class Users : IdentityUser
     {
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public DateTime? DeletedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public bool? IsDeleted { get; set; }
+        public string UpdatedBy { get; set; }
+        public string DeletedBy { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
         public bool IsActive { get; set; }
     }
 }

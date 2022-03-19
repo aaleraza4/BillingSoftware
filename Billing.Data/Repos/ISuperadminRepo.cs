@@ -9,7 +9,7 @@ namespace Billing.Data.Repos
 {
     public interface ISuperadminRepo
     {
-        Task<long> CreateSuperadminAccount(SuperadminAccount FrontEndmodel);
-        Task<SuperadminAccount> CheckSuperadminEmailExist(string Email);
+        //Task<string> CreateSuperadminAccount(Users FrontEndmodel);
+        Task<Users> CheckSuperadminEmailExist(string Email);
     }
 }
