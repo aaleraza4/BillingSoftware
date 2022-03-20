@@ -14,7 +14,7 @@ namespace Billing.Enum
             [Description("Organization")]
             organization = 1,
             [Description("Customer")]
-            cutomer = 2,
+            customer = 2,
         }
     }
 }
