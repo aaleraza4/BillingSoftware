@@ -1,0 +1,28 @@
+﻿@model IList<Billing.DTOs.DTOs.SparePartDTO>;
+@{
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">SpareParts Listing</h6>
+                </div>
+                <div class="card-header py-3">
+                    <a href='@Url.Action("CreateSparePart", "SparePart")'>
+                        <input type='button' value='Add SparePart' />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <partial name="_SparePartListGrid" />
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- End of Main Content -->
+</div>

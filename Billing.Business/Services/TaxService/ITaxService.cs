@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Billing.DTOs.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,10 @@ namespace Billing.Business.Services
 {
     public interface ITaxService
     {
+        Task<bool> AddTax(TaxDTO entity);
+        List<TaxDTO> GetAllTax();
+        Task<TaxDTO> GetTaxById(long id);
+        Task<bool> UpdateTax(TaxDTO taxDTO);
+        Task<bool> DeleteTax(TaxDTO taxDTO);
     }
 }

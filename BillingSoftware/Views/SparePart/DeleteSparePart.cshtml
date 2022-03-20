@@ -1,0 +1,44 @@
+﻿@model Billing.DTOs.DTOs.SparePartDTO;
+@{
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="~/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#myModal").modal('show');
+        });
+    </script>
+</head>
+<body>
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confimation Message</h5>
+                   <a href='@Url.Action("SparePart", "SparePart")' type="button" class="close" >&times;</a>
+                </div>
+                <div class="modal-body">
+                    <p>Are You Sure Want to Delete.</p>
+                    <form method="post" enctype="multipart/form-data" asp-controller="SparePart" asp-action="DeleteSparePart">
+                        <div class="form-group">
+                            <input type="hidden" asp-for="Name" value="@Model?.Name" />
+                            <input type="hidden" asp-for="Price" value="@Model?.Price" />
+                            <a href='@Url.Action("SparePart", "SparePart")' type="button" class="btn btn-Danger">
+                                <span>Cancel</span>
+                            </a>
+                            @*<button type="button" class="close btn btn-Danger" data-dismiss="modal" onclick="@Url.Action("Organization","Organization")">Cancel</button>*@
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

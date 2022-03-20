@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 
 namespace Billing.Business.AutoMapper
 {
-    public class AutoMapper : Profile
+    public class AutoMapperProfiles : Profile
     {
-        public AutoMapper()
+        public AutoMapperProfiles()
         {
             CreateMap<Bill, BillDTO>().ReverseMap();
             CreateMap<Organization, OrganizationDTO>().ReverseMap();
+            CreateMap<OrganizationDTO, Organization>().ReverseMap();
             CreateMap<Quotation, QuotationDTO>().ReverseMap();
             CreateMap<SpareParts, SparePartDTO>().ReverseMap();
             CreateMap<Tax, TaxDTO>().ReverseMap();
