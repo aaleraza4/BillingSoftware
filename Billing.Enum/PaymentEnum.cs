@@ -8,11 +8,10 @@ namespace Billing.Enum
 {
     public class PaymentEnum
     {
-        public enum PaymentType
+        public enum PaymentType : int
         {
-            Cash=1,
-            Cheque,
-
+            FullyPaid= 1,
+            PartialPaid,
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Billing.DTOs.DTOs;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,6 @@ namespace Billing.Business.Services
         Task<OrganizationDTO> GetOrganizationById(long id);
         Task<bool> UpdateOrganization(OrganizationDTO organizationDTO);
         Task<bool> DeleteOrganization(OrganizationDTO organizationDTO);
-
-
+        IEnumerable<SelectListItem> GetAllOrganizationForDropdown();
     }
 }

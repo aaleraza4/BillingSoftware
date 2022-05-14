@@ -22,6 +22,10 @@ namespace Billing.Data.DbContexts
         public DbSet<Tax> Taxes { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Roles> Roles  { get; set; }
+        public DbSet<BillSparePart> BillSpareParts { get; set; }
+        public DbSet<QuotationSparePart> QuotationSpareParts  { get; set; }
+        public DbSet<Repairing> Repairings  { get; set; }
+        public DbSet<QuotationRepairing> QuotationRepairings  { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Billing.Data.Entities
 {
     [Table("billing_tax")]
-    public class Tax:BaseEntity
+    public class Tax : BaseEntity
     {
         public string Type { get; set; }
         public double Percent { get; set; }

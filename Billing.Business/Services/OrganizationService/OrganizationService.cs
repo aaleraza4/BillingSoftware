@@ -2,6 +2,8 @@
 using Billing.Data.Entities;
 using Billing.Data.Repos;
 using Billing.DTOs.DTOs;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace Billing.Business.Services
 {
-    public class OrganizationService :IOrganizationService
+    public class OrganizationService : IOrganizationService
     {
         private readonly IOrganizationRepo _organizationRepo;
         private readonly IMapper _mapper;
 
-        public OrganizationService(IOrganizationRepo organizationRepo,IMapper mapper)
+        public OrganizationService(IOrganizationRepo organizationRepo, IMapper mapper)
         {
             _organizationRepo = organizationRepo;
             _mapper = mapper;
@@ -48,14 +50,14 @@ namespace Billing.Business.Services
 
                 throw;
             }
-            
+
         }
 
         public List<OrganizationDTO> GetAllOrganization()
         {
             try
             {
-                var entity = _organizationRepo.GetAll().Where(x=>x.IsDeleted!=true)?.ToList();
+                var entity = _organizationRepo.GetAll().Where(x => x.IsDeleted != true)?.ToList();
                 var organization = _mapper.Map<List<OrganizationDTO>>(entity);
                 return organization;
             }
@@ -64,15 +66,15 @@ namespace Billing.Business.Services
 
                 throw;
             }
-            
+
         }
 
         public async Task<OrganizationDTO> GetOrganizationById(long id)
         {
             try
             {
-                var entity =  _organizationRepo.GetAll().Where(x=>x.Id==id)?.FirstOrDefault();
-                
+                var entity = _organizationRepo.GetAll().Where(x => x.Id == id)?.FirstOrDefault();
+
                 var organization = _mapper.Map<OrganizationDTO>(entity);
                 return organization;
             }
@@ -81,7 +83,7 @@ namespace Billing.Business.Services
 
                 throw;
             }
-           
+
         }
         public async Task<bool> DeleteOrganization(OrganizationDTO organizationDTO)
         {
@@ -98,7 +100,7 @@ namespace Billing.Business.Services
 
                 throw;
             }
-            
+
         }
         public async Task<bool> UpdateOrganization(OrganizationDTO organizationDTO)
         {
@@ -114,7 +116,16 @@ namespace Billing.Business.Services
 
                 throw;
             }
-            
+
+        }
+
+        public IEnumerable<SelectListItem> GetAllOrganizationForDropdown()
+        {
+            return _organizationRepo.GetAll().Where(x => x.IsDeleted != true).Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString()
+            }).ToList();
         }
     }
 }

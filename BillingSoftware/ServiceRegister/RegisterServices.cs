@@ -11,6 +11,8 @@ using Billing.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using BillingSoftware.Middlewares;
 using Billing.Business.AutoMapper;
+using Billing.Business.Services.ViewRenderService;
+using Billing.Business.Services.RepairingService;
 
 namespace BillingSoftware.ServiceRegister
 {
@@ -51,6 +53,8 @@ namespace BillingSoftware.ServiceRegister
             services.AddScoped<IQuotationService, QuotationService>();
             services.AddScoped<ISparePartsService, SparePartsService>();
             services.AddScoped<ITaxService, TaxService>();
+            services.AddScoped<IViewRenderService, ViewRenderService>();
+            services.AddScoped<IRepairingService, RepairingService>();
             #endregion
 
             #region @@@[------Repository]
@@ -60,6 +64,7 @@ namespace BillingSoftware.ServiceRegister
             services.AddScoped<IQuotationRepo, QuotationRepo>();
             services.AddScoped<ISparePartsRepo, SparePartsRepo>();
             services.AddScoped<ITaxRepo, TaxRepo>();
+            services.AddScoped<IRepairingRepo, RepairingRepo>();
             #endregion
             services.AddAutoMapper(typeof(AutoMapperProfiles));
 

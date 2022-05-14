@@ -2,6 +2,7 @@
 using Billing.Data.Entities;
 using Billing.Data.Repos;
 using Billing.DTOs.DTOs;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -111,6 +112,15 @@ namespace Billing.Business.Services
                 throw;
             }
 
+        }
+
+        public IEnumerable<SelectListItem> GetAllTaxsForDropdown()
+        {
+            return _taxRepo.GetAll().Where(x => x.IsDeleted != true).Select(x => new SelectListItem
+            {
+                Text = x.Type,
+                Value = x.Id.ToString()
+            }).ToList();
         }
     }
 }

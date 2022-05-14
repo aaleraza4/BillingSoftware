@@ -1,4 +1,5 @@
 ﻿using Billing.DTOs.DTOs;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Billing.Business.Services
         Task<SparePartDTO> GetSparePartById(long id);
         Task<bool> UpdateSparePart(SparePartDTO sparePartDTO);
         Task<bool> DeleteSparePart(SparePartDTO sparePartDTOs);
+        IEnumerable<SelectListItem> GetAllSpareSpartForDropdown();
     }
 }

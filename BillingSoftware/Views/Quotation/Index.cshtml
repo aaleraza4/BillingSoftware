@@ -1,0 +1,42 @@
+﻿@model IList<Billing.DTOs.DTOs.QuotationDTO>;
+@{
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">SpareParts Listing</h6>
+                </div>
+                <div class="card-header py-3">
+                    <a data-ajax="true"
+                       data-ajax-method="get"
+                       data-ajax-mode="replace"
+                       data-ajax-success="addUpdateQuotationSuccess"
+                       data-ajax-url="@Url.Action("AddUpdateQuotationForm", "Quotation")">
+                        <input type='button' value='Add Quotation' class="btn btn-primary" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <partial name="_QuotationGrid" />
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- End of Main Content -->
+</div>
+
+<div class="modal fade" id="QuotationModal" tabindex="-1" role="dialog"  aria-labelledby="QuotationModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content quotation-modal-body">
+
+        </div>
+    </div>
+</div>
+
+<script src="~/ControllerJs/Quotation.js" asp-append-version="true"></script>

@@ -1,0 +1,43 @@
+﻿@model IList<Billing.DTOs.DTOs.RepairingDTO>;
+@{
+
+    var _inc = 1;
+}
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th width="5%" class="text-center">Serial No.</th>
+                <th>Repair Work</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model?.Count() > 0)
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td width="5%" class="text-center">@_inc</td>
+                        <td>@item?.Name</td>
+                        
+                        <td>
+                            <a data-ajax="true"
+                               data-ajax-method="get"
+                               data-ajax-mode="replace"
+                               data-ajax-success="addUpdateRepairWorkSuccess"
+                               data-ajax-url="@Url.Action("EditRepairWork", "Repairing",new { Id=item?.Id})">Edit</a>
+                        </td>
+                        <td>
+                            <a href='@Url.Action("DeleteRepairWork", "Repairing",new { id=item?.Id})'>
+                                <span>Delete</span>
+                            </a>
+                        </td>
+                    </tr>
+                    _inc = _inc + 1;
+                }
+            }
+
+        </tbody>
+    </table>
+</div>

@@ -1,4 +1,5 @@
 ﻿using Billing.DTOs.DTOs;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Billing.Business.Services
         Task<TaxDTO> GetTaxById(long id);
         Task<bool> UpdateTax(TaxDTO taxDTO);
         Task<bool> DeleteTax(TaxDTO taxDTO);
+        IEnumerable<SelectListItem> GetAllTaxsForDropdown();
     }
 }

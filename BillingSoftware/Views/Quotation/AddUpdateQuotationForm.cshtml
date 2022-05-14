@@ -1,0 +1,96 @@
+﻿@model Billing.DTOs.DTOs.QuotationDTO;
+@using Billing.Enum;
+@using Billing.Common.ExtensionMethods;
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<div class="modal-header">
+    <h5 class="modal-title" id="QuotationModal">Modal title</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form>
+        <label>Quotation No: @Model.QuotationNo</label><br />
+        <label>Quotation Date: @Model.CreatedDate</label>
+        <div class="form-group col-md-4">
+            <label>Work Type</label>
+            <select class="form-control" asp-for="WorkTypeId" onchange="ChangeWorkType(this)"  style="width:100%;">
+                <option value="" selected>Please select Work Type</option>
+                <option value="@WorkTypeEnum.SparePart.GetHashCode()">@WorkTypeEnum.SparePart.GetEnumDescription()</option>
+                <option value="@WorkTypeEnum.Repair.GetHashCode()">@WorkTypeEnum.Repair.GetEnumDescription()</option>
+                <option value="@WorkTypeEnum.All.GetHashCode()">@WorkTypeEnum.All.GetEnumDescription()</option>
+            </select>
+        </div>
+        <div class="form-group SparePartDiv d-none">
+            <label for="inputAddress2">Spare Part</label>
+            <select class="form-control sparepart-multipleselect" asp-for="SparePartId" asp-items="Model.SparePartList"
+                    onchange="ChangeSparePart(this)" multiple style="width:100%;">
+            </select>
+            <div class="DynamicSparePartDiv">
+            </div>
+        </div>
+        <div class="form-group ReparingDiv d-none">
+            <label for="inputAddress2">Reparing</label>
+            <partial name="_SingleReparingFieldsPartialView" />
+            <div class="DynamicReparingDiv">
+            </div>
+        </div>
+        @*<div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="LaborAmount">Labor Amount</label>
+                <input type="email" class="form-control" asp-for="LaborAmount" placeholder="Email">
+                <span asp-validation-for="LaborAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="LaborAmount">Labor Amount</label>
+                <input type="email" class="form-control" asp-for="LaborAmount" placeholder="Email">
+                <span asp-validation-for="LaborAmount" class="text-danger"></span>
+            </div>
+        </div>*@
+        <div class="form-group">
+            <label for="inputAddress2">Address 2</label>
+            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputCity">City</label>
+                <input type="text" class="form-control" id="inputCity">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputState">State</label>
+                <select id="inputState" class="form-control">
+                    <option selected>Choose...</option>
+                    <option>...</option>
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="inputZip">Zip</label>
+                <input type="text" class="form-control" id="inputZip">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck">
+                <label class="form-check-label" for="gridCheck">
+                    Check me out
+                </label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary">Save changes</button>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.sparepart-multipleselect').select2({
+            placeholder: "Please select Spare Part",
+            allowClear: true
+        });
+    });
+
+</script>

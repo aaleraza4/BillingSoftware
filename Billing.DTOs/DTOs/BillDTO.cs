@@ -19,5 +19,6 @@ namespace Billing.DTOs.DTOs
         public int RepairAmount { get; set; }
         public bool IsAactive { get; set; }
         public string Status { get; set; }
+        public string CarNo { get; set; }
     }
 }

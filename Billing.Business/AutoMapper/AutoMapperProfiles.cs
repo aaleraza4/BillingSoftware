@@ -15,6 +15,8 @@ namespace Billing.Business.AutoMapper
         {
             CreateMap<Bill, BillDTO>().ReverseMap();
             CreateMap<Organization, OrganizationDTO>().ReverseMap();
+            CreateMap<Repairing, RepairingDTO>().ReverseMap();
+            CreateMap<RepairingDTO, Repairing>().ReverseMap();
             CreateMap<OrganizationDTO, Organization>().ReverseMap();
             CreateMap<Quotation, QuotationDTO>().ReverseMap();
             CreateMap<SpareParts, SparePartDTO>().ReverseMap();

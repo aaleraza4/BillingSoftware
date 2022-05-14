@@ -32,16 +32,16 @@ namespace Billing.Business.Services
             }
             bill.Id = entity.Id;
             bill.BillNo = entity.BillNo;
-            bill.ItemName = entity.ItemName;
-            bill.Quantity = entity.Quantity;
-            bill.Rate = entity.Rate;
-            bill.ApplicableTax = entity.ApplicableTax;
-            bill.Organization = entity.Organization;
-            bill.TotalAmount = entity.TotalAmount;
+            //bill.ItemName = entity.ItemName;
+            //bill.Quantity = entity.Quantity;
+            //bill.Rate = entity.Rate;
+            //bill.ApplicableTax = entity.ApplicableTax;
+            //bill.Organization = entity.Organization;
+            //bill.TotalAmount = entity.TotalAmount;
             bill.LaborAmount = entity.LaborAmount;
             bill.RepairAmount = entity.RepairAmount;
-            bill.IsAactive = entity.IsAactive;
-            bill.Status = entity.Status;
+            //bill.IsAactive = entity.IsAactive;
+            //bill.Status = entity.Status;
             bill.IsDeleted = entity.IsDeleted;
             if (entity.Id == 0)
             {

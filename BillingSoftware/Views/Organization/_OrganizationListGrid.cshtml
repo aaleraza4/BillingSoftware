@@ -20,21 +20,21 @@
             {
                 @foreach (var item in Model)
                 {
-            <tr>
-                <td width="5%" class="text-center">@_inc</td>
-                <td>@item?.Name</td>
-                <td>@item?.OrganizationType?.GetEnumDescription()</td>
-                <td>
-                    <a href='@Url.Action("EditOrganization", "Organization",new { id=item?.Id})'>
-                        <span>Edit</span>
-                    </a>
-                </td>
-                <td>
-                    <a href='@Url.Action("DeleteOrganization", "Organization",new { id=item?.Id})'>
-                        <span>Delete</span>
-                    </a>
-                </td>
-            </tr>
+                    <tr>
+                        <td width="5%" class="text-center">@_inc</td>
+                        <td>@item?.Name</td>
+                        <td>@item?.OrganizationType?.GetEnumDescription()</td>
+                        <td>
+                            <a href='@Url.Action("EditOrganization", "Organization",new { id=item?.Id})'>
+                                <span>Edit</span>
+                            </a>
+                        </td>
+                        <td>
+                            <a href='@Url.Action("DeleteOrganization", "Organization",new { id=item?.Id})'>
+                                <span>Delete</span>
+                            </a>
+                        </td>
+                    </tr>
                     _inc = _inc + 1;
                 }
             }

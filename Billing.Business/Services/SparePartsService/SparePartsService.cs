@@ -2,6 +2,7 @@
 using Billing.Data.Entities;
 using Billing.Data.Repos;
 using Billing.DTOs.DTOs;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,6 +114,15 @@ namespace Billing.Business.Services
                 throw;
             }
 
+        }
+
+        public IEnumerable<SelectListItem> GetAllSpareSpartForDropdown()
+        {
+            return _sparePartsRepo.GetAll().Where(x => x.IsDeleted != true).Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString()
+            }).ToList();
         }
     }
 }
