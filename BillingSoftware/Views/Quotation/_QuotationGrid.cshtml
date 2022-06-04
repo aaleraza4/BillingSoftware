@@ -41,9 +41,11 @@
                             </a>
                         </td>
                         <td>
-                            <a href='@Url.Action("DeleteQuotation", "Quotation",new { id=item?.Id})'>
+                            <a href="javascript:void(0)" onclick="Billing_Quotation.DeleteQuotation('/Quotation/DeleteQuotation', '@item.Id')">
                                 <span>Delete</span>
+
                             </a>
+                           
                         </td>
                     </tr>
                     _inc = _inc + 1;

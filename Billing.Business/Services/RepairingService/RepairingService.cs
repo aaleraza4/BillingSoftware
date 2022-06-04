@@ -46,9 +46,21 @@ namespace Billing.Business.Services.RepairingService
             }
         }
 
-        public Task<bool> DeleteRepairingWork(RepairingDTO repairingDTO)
+        public async Task<bool> DeleteRepairingWork(long id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var model = await _repairingRepo.GetAll().Where(x => x.Id == id)?.FirstOrDefaultAsync();
+                model.IsDeleted = true;
+                model.DeletedDate = DateTime.Now;
+                await _repairingRepo.Change(model);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         public List<RepairingDTO> GetAllRepairingwWork()

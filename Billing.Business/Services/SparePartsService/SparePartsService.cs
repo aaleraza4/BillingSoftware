@@ -3,6 +3,7 @@ using Billing.Data.Entities;
 using Billing.Data.Repos;
 using Billing.DTOs.DTOs;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,22 +27,18 @@ namespace Billing.Business.Services
         {
             try
             {
-                var sparepart = await _sparePartsRepo.Get(entity?.Id);
-                if (sparepart == null)
+                var DBresult = await _sparePartsRepo.GetAll().Where(x => x.Id == entity.Id).FirstOrDefaultAsync();
+                DBresult = DBresult == null ? new SpareParts() : DBresult;
+                DBresult.Name = entity.Name;
+                DBresult.Price = entity.Price;
+                if (entity.Id == 0)
                 {
-                    sparepart = new();
-                }
-                sparepart = _mapper.Map<SpareParts>(entity);
-                if (entity?.Id == 0)
-                {
-                    await _sparePartsRepo.Add(sparepart);
-
+                    await _sparePartsRepo.Add(DBresult);
                 }
                 else
                 {
-                    await _sparePartsRepo.Change(sparepart);
+                    await _sparePartsRepo.Change(DBresult);
                 }
-
                 return true;
             }
             catch (Exception ex)
@@ -82,14 +79,14 @@ namespace Billing.Business.Services
             }
 
         }
-        public async Task<bool> DeleteSparePart(SparePartDTO sparePartDTO)
+        public async Task<bool> DeleteSparePart(long id)
         {
             try
             {
-                sparePartDTO.IsDeleted = true;
-                sparePartDTO.DeletedDate = DateTime.Now;
-                var entity = _mapper.Map<SpareParts>(sparePartDTO);
-                await _sparePartsRepo.Change(entity);
+                var model = await _sparePartsRepo.GetAll().Where(x => x.Id == id)?.FirstOrDefaultAsync();
+                model.IsDeleted = true;
+                model.DeletedDate = DateTime.Now;
+                await _sparePartsRepo.Change(model);
                 return true;
             }
             catch (Exception ex)

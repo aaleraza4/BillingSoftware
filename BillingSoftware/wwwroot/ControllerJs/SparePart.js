@@ -1,14 +1,15 @@
-﻿function addUpdateRepairWorkSuccess(res) {
-    $('.repairing-modal-body').html(res);
-    $('#RepairWorkModal').modal('show');
+﻿function addUpdateSparePartSuccess(res) {
+    $('.sparepart-modal-body').html(res);
+    $('#SparePartModal').modal('show');
 }
 function addUpdatePostSuccess(res) {
     $('.grid-div').html(res);
-    $('#RepairWorkModal').modal('hide');
+    $('#SparePartModal').modal('hide');
 }
-var Billing_RepairWork = function () {
+
+var Billing_SparePart = function () {
     return {
-        DeleteRepairWork(url, id) {
+        DeleteSparePart(url, id) {
             swal({
                 title: "Warning",
                 text: "Are You sure want to Delete?",
@@ -28,7 +29,7 @@ var Billing_RepairWork = function () {
                     $.get(url, { Id: id }, function (res) {
                         // Get values from Doms
                         debugger;
-                        if (res.Response != "") {
+                        if (res.Response!="") {
                             $('.grid-div').html(res);
                             toastr.success('Record successfully deleted');
                         }

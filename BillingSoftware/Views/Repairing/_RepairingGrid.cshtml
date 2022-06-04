@@ -29,9 +29,11 @@
                                data-ajax-url="@Url.Action("EditRepairWork", "Repairing",new { Id=item?.Id})">Edit</a>
                         </td>
                         <td>
-                            <a href='@Url.Action("DeleteRepairWork", "Repairing",new { id=item?.Id})'>
+                            <a href="javascript:void(0)" onclick="Billing_RepairWork.DeleteRepairWork('/Repairing/DeleteRepairWork', '@item.Id')">
                                 <span>Delete</span>
+
                             </a>
+                            
                         </td>
                     </tr>
                     _inc = _inc + 1;

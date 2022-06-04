@@ -115,29 +115,16 @@ namespace BillingSoftware.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteQuotation(long id)
         {
-            var model = await _quotationService.GetQuotationById(id);
-
-
-            return View(model);
+            var model = await _quotationService.DeleteQuotation(id);
+            var quotation = GetAllQuotation();
+            return PartialView("_QuotationGrid", quotation);
         }
-
-        // POST: OrganizationController/Delete/5
-        [HttpPost]
-        public async Task<IActionResult> DeleteQuotation(QuotationDTO QuotationDTO)
+        public IEnumerable<QuotationDTO> GetAllQuotation()
         {
-            try
-            {
-                bool result = false;
-                if (QuotationDTO != null)
-                {
-                    result = await _quotationService.DeleteQuotation(QuotationDTO);
-                }
-                return RedirectToAction("Quotation", "Quotation");
-            }
-            catch
-            {
-                return View();
-            }
+            var quotation = _quotationService.GetAllQuotation().ToList();
+            return quotation;
+
         }
+        
     }
 }

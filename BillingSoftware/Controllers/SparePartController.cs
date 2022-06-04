@@ -21,94 +21,68 @@ namespace BillingSoftware.Controllers
             var model = _sparePartsService.GetAllSparePart();
             return View(model);
         }
-
-        // GET: OrganizationController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> EditSparePart(long Id)
         {
-            return View();
+            var model = await _sparePartsService.GetSparePartById(Id);
+            return PartialView("AddUpdateSparePartForm", model);
         }
-
-        // GET: OrganizationController/Create
         [HttpGet]
-        public IActionResult CreateSparePart()
+        public IActionResult AddUpdateSparePartForm()
         {
-            return View();
+            return PartialView(new SparePartDTO());
         }
-
-        // POST: OrganizationController/Create
         [HttpPost]
 
-        public async Task<IActionResult> CreateSparePart(SparePartDTO sparePartDTO)
+        public async Task<IActionResult> AddUpdateSparePartForm(SparePartDTO sparePartDTO)
         {
             try
             {
                 bool result = false;
                 if (sparePartDTO != null)
                 {
-                    result = await _sparePartsService.AddSparePart(sparePartDTO);
+                    result = await _sparePartsService.AddSparePart(sparePartDTO); ;
                 }
-                return RedirectToAction("SparePart", "SparePart");
+                var sparePart = GetAllSparePart();
+                return PartialView("_SparePartGrid", sparePart);
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
         }
-
-        // GET: OrganizationController/Edit/5
-        public async Task<IActionResult> EditSparePart(long id)
+        public IEnumerable<SparePartDTO> GetAllSparePart()
         {
-            var model = await _sparePartsService.GetSparePartById(id);
+            var sparePart = _sparePartsService.GetAllSparePart().ToList();
+            return sparePart;
 
-            return View(model);
         }
-
-        // POST: OrganizationController/Edit/5
-        [HttpPost]
-        public async Task<IActionResult> EditSparePart(SparePartDTO sparePartDTO)
-        {
-            try
-            {
-                bool result = false;
-                if (sparePartDTO != null)
-                {
-                    result = await _sparePartsService.UpdateSparePart(sparePartDTO);
-                }
-                return RedirectToAction("SparePart", "SparePart");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: OrganizationController/Delete/5
+       
+        //// GET: OrganizationController/Delete/5
         [HttpGet]
         public async Task<IActionResult> DeleteSparePart(long id)
         {
-            var model = await _sparePartsService.GetSparePartById(id);
-
-
-            return View(model);
+            var result = await _sparePartsService.DeleteSparePart(id);
+            var sparePart = GetAllSparePart();
+            return PartialView("_SparePartGrid", sparePart);
         }
 
-        // POST: OrganizationController/Delete/5
-        [HttpPost]
-        public async Task<IActionResult> DeleteSparePart(SparePartDTO sparePArtDTO)
-        {
-            try
-            {
-                bool result = false;
-                if (sparePArtDTO != null)
-                {
-                    result = await _sparePartsService.DeleteSparePart(sparePArtDTO);
-                }
-                return RedirectToAction("SparePart", "SparePart");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //// POST: OrganizationController/Delete/5
+        //[HttpPost]
+        //public async Task<IActionResult> DeleteSparePart(SparePartDTO sparePArtDTO)
+        //{
+        //    try
+        //    {
+        //        bool result = false;
+        //        if (sparePArtDTO != null)
+        //        {
+        //            result = await _sparePartsService.DeleteSparePart(sparePArtDTO);
+        //        }
+        //        return RedirectToAction("SparePart", "SparePart");
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
     }
 }

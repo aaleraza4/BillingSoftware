@@ -21,94 +21,50 @@ namespace BillingSoftware.Controllers
             var model = _taxService.GetAllTax();
             return View(model);
         }
-
-        // GET: OrganizationController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> EditTax(long Id)
         {
-            return View();
+            var model = await _taxService.GetTaxById(Id);
+            return PartialView("AddUpdateTaxForm", model);
         }
-
-        // GET: OrganizationController/Create
         [HttpGet]
-        public IActionResult CreateTax()
+        public IActionResult AddUpdateTaxForm()
         {
-            return View();
+            return PartialView(new TaxDTO());
         }
-
-        // POST: OrganizationController/Create
         [HttpPost]
 
-        public async Task<IActionResult> CreateTax(TaxDTO taxDTO)
+        public async Task<IActionResult> AddUpdateTaxForm(TaxDTO taxDTO)
         {
             try
             {
                 bool result = false;
                 if (taxDTO != null)
                 {
-                    result = await _taxService.AddTax(taxDTO);
+                    result = await  _taxService.AddTax(taxDTO); ;
                 }
-                return RedirectToAction("Tax", "Tax");
+                var tax = GetAllTax();
+                return PartialView("_TaxGrid", tax);
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
         }
-
-        // GET: OrganizationController/Edit/5
-        public async Task<IActionResult> EditTax(long id)
+        public IEnumerable<TaxDTO> GetAllTax()
         {
-            var model = await _taxService.GetTaxById(id);
+            var tax = _taxService.GetAllTax().ToList();
+            return tax;
 
-            return View(model);
-        }
-
-        // POST: OrganizationController/Edit/5
-        [HttpPost]
-        public async Task<IActionResult> EditTax(TaxDTO taxDTO)
-        {
-            try
-            {
-                bool result = false;
-                if (taxDTO != null)
-                {
-                    result = await _taxService.UpdateTax(taxDTO);
-                }
-                return RedirectToAction("Tax", "Tax");
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         // GET: OrganizationController/Delete/5
         [HttpGet]
         public async Task<IActionResult> DeleteTax(long id)
         {
-            var model = await _taxService.GetTaxById(id);
-
-
-            return View(model);
+            var model = await _taxService.DeleteTax(id);
+            var tax = GetAllTax();
+            return PartialView("_TaxGrid", tax);
         }
 
-        // POST: OrganizationController/Delete/5
-        [HttpPost]
-        public async Task<IActionResult> DeleteTax(TaxDTO taxDTO)
-        {
-            try
-            {
-                bool result = false;
-                if (taxDTO != null)
-                {
-                    result = await _taxService.DeleteTax(taxDTO);
-                }
-                return RedirectToAction("Tax", "Tax");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

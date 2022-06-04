@@ -10,15 +10,19 @@
         <div class="container-fluid">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Organization Listing</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Customer Listing</h6>
                 </div>
                 <div class="card-header py-3">
-                    <a href='@Url.Action("CreateOrganization", "Organization")'>
-                        <input type='button' value='Add Customer/Organization' />
+                    <a data-ajax="true"
+                       data-ajax-method="get"
+                       data-ajax-mode="replace"
+                       data-ajax-success="addUpdateOrganizationSuccess"
+                       data-ajax-url="@Url.Action("AddUpdateOrganizationForm", "Organization")">
+                        <input type='button' value='Add Customer/Organization' class="btn btn-primary" />
                     </a>
                 </div>
-                <div class="card-body">
-                    <partial name="_OrganizationListGrid" />
+                <div class="card-body grid-div">
+                    <partial name="_OrganizationGrid" />
                 </div>
             </div>
         </div>
@@ -27,21 +31,12 @@
     <!-- End of Main Content -->
 </div>
 
-@section Scripts{
+<div class="modal fade" id="OrganizationModal" tabindex="-1" role="dialog" aria-labelledby="OrganizationModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content organization-modal-body">
 
-    <script>
-        //$('#dataTable').DataTable({
-        //    "dom": 'Blfrtip',
-        //    buttons: [
-        //        'copy', 'excel', 'pdf'
-        //    ]
-        //});
-        //$('#MedicalDatable').DataTable({
-        //    dom: 'Bfrtip',
-        //    buttons: [
-        //        'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
-        //    ]
-        //});
-    </script>
+        </div>
+    </div>
+</div>
 
-}
+<script src="~/ControllerJs/Organization.js" asp-append-version="true"></script>

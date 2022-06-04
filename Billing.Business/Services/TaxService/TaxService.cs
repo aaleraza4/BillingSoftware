@@ -3,6 +3,7 @@ using Billing.Data.Entities;
 using Billing.Data.Repos;
 using Billing.DTOs.DTOs;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Billing.Business.Services
     {
         private readonly ITaxRepo _taxRepo;
         private readonly IMapper _mapper;
-        public TaxService(ITaxRepo taxRepo,IMapper mapper)
+        public TaxService(ITaxRepo taxRepo, IMapper mapper)
         {
             _taxRepo = taxRepo;
             _mapper = mapper;
@@ -24,22 +25,18 @@ namespace Billing.Business.Services
         {
             try
             {
-                var tax = await _taxRepo.Get(entity?.Id);
-                if (tax == null)
+                var DBresult = await _taxRepo.GetAll().Where(x => x.Id == entity.Id).FirstOrDefaultAsync();
+                DBresult = DBresult == null ? new Tax() : DBresult;
+                DBresult.Type = entity.Type;
+                DBresult.Percent = entity.Percent;
+                if (entity.Id == 0)
                 {
-                    tax = new();
-                }
-                tax = _mapper.Map<Tax>(entity);
-                if (entity?.Id == 0)
-                {
-                    await _taxRepo.Add(tax);
-
+                    await _taxRepo.Add(DBresult);
                 }
                 else
                 {
-                    await _taxRepo.Change(tax);
+                    await _taxRepo.Change(DBresult);
                 }
-
                 return true;
             }
             catch (Exception ex)
@@ -80,14 +77,14 @@ namespace Billing.Business.Services
             }
 
         }
-        public async Task<bool> DeleteTax(TaxDTO taxDTO)
+        public async Task<bool> DeleteTax(long id)
         {
             try
             {
-                taxDTO.IsDeleted = true;
-                taxDTO.DeletedDate = DateTime.Now;
-                var entity = _mapper.Map<Tax>(taxDTO);
-                await _taxRepo.Change(entity);
+                var model = await _taxRepo.GetAll().Where(x => x.Id == id)?.FirstOrDefaultAsync();
+                model.IsDeleted = true;
+                model.DeletedDate = DateTime.Now;
+                await _taxRepo.Change(model);
                 return true;
             }
             catch (Exception ex)
@@ -95,6 +92,7 @@ namespace Billing.Business.Services
 
                 throw;
             }
+
 
         }
         public async Task<bool> UpdateTax(TaxDTO taxDTO)

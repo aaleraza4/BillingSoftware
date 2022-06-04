@@ -13,12 +13,16 @@
                     <h6 class="m-0 font-weight-bold text-primary">Tax Listing</h6>
                 </div>
                 <div class="card-header py-3">
-                    <a href='@Url.Action("CreateTax", "Tax")'>
-                        <input type='button' value='Add Tax' />
+                    <a data-ajax="true"
+                       data-ajax-method="get"
+                       data-ajax-mode="replace"
+                       data-ajax-success="addUpdateTaxSuccess"
+                       data-ajax-url="@Url.Action("AddUpdateTaxForm", "Tax")">
+                        <input type='button' value='Add Tax' class="btn btn-primary" />
                     </a>
                 </div>
-                <div class="card-body">
-                    <partial name="_TaxListGrid" />
+                <div class="card-body grid-div">
+                    <partial name="_TaxGrid" />
                 </div>
             </div>
         </div>
@@ -26,3 +30,13 @@
     </div>
     <!-- End of Main Content -->
 </div>
+
+<div class="modal fade" id="TaxModal" tabindex="-1" role="dialog" aria-labelledby="TaxModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content tax-modal-body">
+
+        </div>
+    </div>
+</div>
+
+<script src="~/ControllerJs/Tax.js" asp-append-version="true"></script>

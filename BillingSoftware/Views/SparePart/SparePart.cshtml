@@ -13,12 +13,16 @@
                     <h6 class="m-0 font-weight-bold text-primary">SpareParts Listing</h6>
                 </div>
                 <div class="card-header py-3">
-                    <a href='@Url.Action("CreateSparePart", "SparePart")'>
-                        <input type='button' value='Add SparePart' />
+                    <a data-ajax="true"
+                       data-ajax-method="get"
+                       data-ajax-mode="replace"
+                       data-ajax-success="addUpdateSparePartSuccess"
+                       data-ajax-url="@Url.Action("AddUpdateSparePartForm", "SparePart")">
+                        <input type='button' value='Add SparePart' class="btn btn-primary" />
                     </a>
                 </div>
-                <div class="card-body">
-                    <partial name="_SparePartListGrid" />
+                <div class="card-body grid-div">
+                    <partial name="_SparePartGrid" />
                 </div>
             </div>
         </div>
@@ -26,3 +30,13 @@
     </div>
     <!-- End of Main Content -->
 </div>
+
+<div class="modal fade" id="SparePartModal" tabindex="-1" role="dialog" aria-labelledby="SparePartModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content sparepart-modal-body">
+
+        </div>
+    </div>
+</div>
+
+<script src="~/ControllerJs/SparePart.js" asp-append-version="true"></script>

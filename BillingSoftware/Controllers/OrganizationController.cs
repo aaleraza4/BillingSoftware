@@ -24,94 +24,51 @@ namespace BillingSoftware.Controllers
             var model =  _organizationService.GetAllOrganization();
             return View(model);
         }
-
-        // GET: OrganizationController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> EditOrganization(long Id)
         {
-            return View();
+            var model = await _organizationService.GetOrganizationById(Id);
+            return PartialView("AddUpdateOrganizationForm", model);
         }
-
-        // GET: OrganizationController/Create
         [HttpGet]
-        public IActionResult CreateOrganization()
+        public IActionResult AddUpdateOrganizationForm()
         {
-            return View();
+            return PartialView(new OrganizationDTO());
         }
-
-        // POST: OrganizationController/Create
         [HttpPost]
-       
-        public async Task<IActionResult> CreateOrganization(OrganizationDTO organizationDTO)
-        {
-            try
-            {
-                bool result = false;
-                if (organizationDTO!=null)
-                {
-                    result = await _organizationService.AddOrganization(organizationDTO);
-                }
-                return RedirectToAction("Organization","Organization");
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: OrganizationController/Edit/5
-        public async Task<IActionResult> EditOrganization(int id)
-        {
-            var model =await  _organizationService.GetOrganizationById(id);
-           
-            return View(model);
-        }
-
-        // POST: OrganizationController/Edit/5
-        [HttpPost]
-        public async Task<IActionResult> EditOrganization(OrganizationDTO organizationDTO)
+        public async Task<IActionResult> AddUpdateOrganizationForm(OrganizationDTO organizationDTO)
         {
             try
             {
                 bool result = false;
                 if (organizationDTO != null)
                 {
-                    result = await _organizationService.UpdateOrganization(organizationDTO);
+                    result = await _organizationService.AddOrganization(organizationDTO); ;
                 }
-                return RedirectToAction("Organization", "Organization");
+                var organization = GetAllOrganization();
+                return PartialView("_OrganizationGrid", organization);
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
         }
+        public IEnumerable<OrganizationDTO> GetAllOrganization()
+        {
+            var organization = _organizationService.GetAllOrganization().ToList();
+            return organization;
 
+        }
+       
         // GET: OrganizationController/Delete/5
         [HttpGet]
         public async Task<IActionResult> DeleteOrganization(long id)
         {
-            var model = await _organizationService.GetOrganizationById(id);
-
-
-            return View( model);
+            var model = await _organizationService.DeleteOrganization(id);
+            var organization = GetAllOrganization();
+            return PartialView("_OrganizationGrid", organization); 
         }
 
-        // POST: OrganizationController/Delete/5
-        [HttpPost]
-        public async Task<IActionResult> DeleteOrganization(OrganizationDTO organizationDTO)
-        {
-            try
-            {
-                bool result = false;
-                if (organizationDTO != null)
-                {
-                    result = await _organizationService.DeleteOrganization(organizationDTO);
-                }
-                return RedirectToAction("Organization", "Organization");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
     }
 }

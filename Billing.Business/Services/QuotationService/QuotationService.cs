@@ -53,14 +53,14 @@ namespace Billing.Business.Services
 
         }
 
-        public async Task<bool> DeleteQuotation(QuotationDTO QuotationDTOs)
+        public async Task<bool> DeleteQuotation(long id)
         {
             try
             {
-                QuotationDTOs.IsDeleted = true;
-                QuotationDTOs.DeletedDate = DateTime.Now;
-                var entity = _mapper.Map<Quotation>(QuotationDTOs);
-                await _quotationRepo.Change(entity);
+                var model = await _quotationRepo.GetAll().Where(x => x.Id == id)?.FirstOrDefaultAsync();
+                model.IsDeleted = true;
+                model.DeletedDate = DateTime.Now;
+                await _quotationRepo.Change(model);
                 return true;
             }
             catch (Exception ex)
