@@ -28,9 +28,79 @@
     <!-- ======================= THEME COLOR STYLES ===========================-->
     <link rel="stylesheet" href="~/assets/css/layouts/vertical/themes/theme-a.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Toastr Css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" />
+    <style>
+    /*loader css starts here*/
+.pre-loader {
+    align-items: center;
+    display: none;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    position: fixed;
+    top: 0;
+    transition: opacity 0.2s linear;
+    width: 100%;
+    z-index: 9999;
+    opacity: 1;
+    transform: opacity 1s linear;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.triple-spinner {
+    display: block;
+    position: absolute;
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-top: 4px solid #ff5722;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 999;
+}
+
+    .triple-spinner::before,
+    .triple-spinner::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        border: 4px solid transparent;
+    }
+
+    .triple-spinner::before {
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        border-top-color: #ff9800;
+        -webkit-animation: spin 3s linear infinite;
+        animation: spin 3.5s linear infinite;
+    }
+
+    .triple-spinner::after {
+        top: 15px;
+        left: 15px;
+        right: 15px;
+        bottom: 15px;
+        border-top-color: #ffc107;
+        -webkit-animation: spin 1.5s linear infinite;
+        animation: spin 1.75s linear infinite;
+    }
+
+    </style>
 </head>
 
 <body>
+    <div class="pre-loader">
+        <div class="triple-spinner"></div>
+    </div>
     <!-- START APP WRAPPER -->
     <div id="app">
         <!-- START MENU SIDEBAR WRAPPER -->
@@ -260,6 +330,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js" integrity="sha512-DedNBWPF0hLGUPNbCYfj8qjlEnNE92Fqn7xd3Sscfu7ipy7Zu33unHdugqRD3c4Vj7/yLv+slqZhMls/4Oc7Zg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+    <!--Toaster Message-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="~/js/toastr-option.js" asp-append-version="true"></script>
     <!-- ================== GLOBAL APP SCRIPTS ==================-->
     @*<script src="~/assets/js/global/app.js"></script>*@
     <!-- ================== PAGE LEVEL SCRIPTS ==================-->
@@ -283,6 +356,13 @@
             buttons: [
                 'copy', 'excel', 'pdf'
             ]
+        });
+        $(document).ajaxStart(function () {
+            $('.pre-loader').show()
+        });
+
+        $(document).ajaxComplete(function () {
+            $('.pre-loader').hide()
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
