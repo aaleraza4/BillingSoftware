@@ -9,13 +9,15 @@ namespace Billing.DTOs.DTOs
     public class SparePartDTO : BaseDTO
     {
         public string Name { get; set; }
-        public int Price { get; set; }
+        public decimal Price { get; set; }
     }
 
     public class SparePartFieldDTO
     {
-        public string SparePartId  { get; set; }
+        public long SparePartId  { get; set; }
         public string SparePartName { get; set; }
-        public string SparePartQuantity { get; set; }
+        public int SparePartQuantity { get; set; }
+        public decimal Price { get; set; }
+        public bool TaxApply { get; set; }
     }
 }

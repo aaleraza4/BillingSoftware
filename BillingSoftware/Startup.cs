@@ -58,7 +58,7 @@ namespace BillingSoftware
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{id?}");
+                    pattern: "{controller=Quotation}/{action=index}/{id?}");
             });
         }
     }

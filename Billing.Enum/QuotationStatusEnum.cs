@@ -12,6 +12,8 @@ namespace Billing.Enum
         [Description("Approved")]
         Approved = 1,
         [Description("Reject")]
-        Reject
+        Reject,
+        [Description("Pending")]
+        Pending
     }
 }

@@ -12,4 +12,12 @@ namespace Billing.DTOs.DTOs
         [Required(ErrorMessage ="This field is required")]
         public string Name { get; set; }
     }
+
+    public class RepairingWorkFieldDTO
+    {
+        public long RepairingWorkId { get; set; }
+        public string RepairingWorkName { get; set; }
+        public decimal RepairingWorkPrice { get; set; }
+        public bool TaxApply { get; set; }
+    }
 }

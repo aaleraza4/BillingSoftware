@@ -13,6 +13,7 @@ using BillingSoftware.Middlewares;
 using Billing.Business.AutoMapper;
 using Billing.Business.Services.ViewRenderService;
 using Billing.Business.Services.RepairingService;
+using Billing.Business.Services.UserSessionProfile;
 
 namespace BillingSoftware.ServiceRegister
 {
@@ -55,6 +56,7 @@ namespace BillingSoftware.ServiceRegister
             services.AddScoped<ITaxService, TaxService>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
             services.AddScoped<IRepairingService, RepairingService>();
+            services.AddScoped<UserSessionProfileService>();
             #endregion
 
             #region @@@[------Repository]

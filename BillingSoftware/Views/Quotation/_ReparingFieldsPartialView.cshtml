@@ -1,16 +1,23 @@
-﻿@model IEnumerable<Billing.DTOs.DTOs.SparePartFieldDTO>
+﻿@model IEnumerable<Billing.DTOs.DTOs.RepairingWorkFieldDTO>
 @if (Model != null && Model.Count() > 0)
 {
-    foreach (var SparePart in Model)
+    foreach (var RepairWork in Model)
     {
-        <div class="form-row SpartPart-@SparePart.SparePartId">
-            <div class="form-group col-md-6">
-                <label asp-for="@SparePart.SparePartName">Name</label>
-                <input type="text" class="form-control" data-SparePartId="@SparePart.SparePartId" asp-for="@SparePart.SparePartName" placeholder="Enter Spare Part">
+        <div class="form-row repairwork repairingwork-@RepairWork.RepairingWorkName">
+            <div class="form-group col-md-4">
+                <label asp-for="@RepairWork.RepairingWorkName">Name</label>
+                <input type="text" class="form-control" data-RepairingWorkId ="@RepairWork.RepairingWorkId" 
+                asp-for="@RepairWork.RepairingWorkName" placeholder="Enter Repairing Work" readonly>
             </div>
-            <div class="form-group col-md-6">
-                <label asp-for="@SparePart.SparePartQuantity">Quantity</label>
-                <input type="text" class="form-control" data-SparePartId="@SparePart.SparePartId" asp-for="@SparePart.SparePartQuantity" placeholder="Enter Quantity">
+            <div class="form-group col-md-4">
+                <label asp-for="@RepairWork.RepairingWorkPrice">Price</label>
+                <input type="text" class="form-control" data-RepairingWorkId ="@RepairWork.RepairingWorkId" 
+                asp-for="@RepairWork.RepairingWorkPrice" placeholder="Enter Price">
+            </div>
+              <div class="form-group col-md-4">
+                <label asp-for="@RepairWork.TaxApply">Tax Apply</label>
+                <input type="checkbox" class="form-control" data-RepairingWorkId ="@RepairWork.RepairingWorkId" 
+                asp-for="@RepairWork.TaxApply">
             </div>
         </div>
     }

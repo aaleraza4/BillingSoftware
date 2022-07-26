@@ -6,8 +6,11 @@ namespace Billing.Data.Entities
     public class QuotationSparePart
     {
         public long Id { get; set; }
-        public int Rate { get; set; }
+        public decimal Rate { get; set; }
         public int Quantity { get; set; }
+        public decimal? TaxAmount  { get; set; }
+        public decimal? TaxPercent  { get; set; }
+        public bool TaxApplied { get; set; }
         public long SparePartId { get; set; }
         [ForeignKey("SparePartId")]
         public virtual SpareParts SparePart { get; set; }

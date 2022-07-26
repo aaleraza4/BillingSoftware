@@ -121,11 +121,21 @@ namespace Billing.Business.Services
 
         public IEnumerable<SelectListItem> GetAllOrganizationForDropdown()
         {
-            return _organizationRepo.GetAll().Where(x => x.IsDeleted != true).Select(x => new SelectListItem
+            return _organizationRepo.GetAll().Where(x => x.IsDeleted != true && x.OrganizationType == Enum.OrganizationEnum.OrganizationType.organization)
+                .Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.Id.ToString()
-            }).ToList();
+            }).AsEnumerable();
+        }
+        public IEnumerable<SelectListItem> GetAllCustomerForDropdown()
+        {
+            return _organizationRepo.GetAll().Where(x => x.IsDeleted != true && x.OrganizationType == Enum.OrganizationEnum.OrganizationType.customer)
+                .Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString()
+            }).AsEnumerable();
         }
     }
 }

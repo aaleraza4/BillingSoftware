@@ -6,8 +6,8 @@ namespace Billing.Business.Services
 {
     public interface IQuotationService
     {
-        Task<bool> AddQuotation(QuotationDTO entity);
-        List<QuotationDTO> GetAllQuotation();
+        Task<ResponseDTO> AddUpdateQuotation(RequestQuotationDTO entity);
+        Task<List<QuotationListDTO>> GetAllQuotation();
         Task<QuotationDTO> GetQuotationById(long id);
         Task<bool> UpdateQuotation(QuotationDTO QuotationDTO);
         Task<bool> DeleteQuotation(QuotationDTO QuotationDTOs);

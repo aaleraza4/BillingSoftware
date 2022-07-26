@@ -9,88 +9,220 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div class="modal-body">
-    <form>
+<form data-ajax="true"
+      data-ajax-method="post"
+      id="QuotationForm">
+    <div class="modal-body">
+        <input type="hidden" asp-for = "Id"/>
+        <input type="hidden" asp-for = "QuotationNo"/>
+        <input type="text" asp-for = "SparePartArray" class="mail-contacts"  value = "@ViewBag.SparePartArray" />
+        <input type="hidden" asp-for = "RepairingWorkArray" class="mail-contacts" value = "@ViewBag.RepairingWorkArray" />
         <label>Quotation No: @Model.QuotationNo</label><br />
-        <label>Quotation Date: @Model.CreatedDate</label>
-        <div class="form-group col-md-4">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="CarNo">Car No</label>
+                <input type="text" class="form-control" asp-for="CarNo" placeholder="Enter car no">
+                <span class="text-danger" asp-validation-for="CarNo"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="CreatedDate">Invoice Date</label>
+                <input type="date" class="form-control" asp-for="CreatedDate">
+            </div>
+            @*<div class="form-group col-md-4">
+                <label asp-for="CreatedDate">Invoice Date</label>
+                <input type="text" class="form-control" id="inputZip">
+                <span class="text-danger" asp-validation-for="CarNo"></span>
+                </div>*@
+        </div>
+
+       @foreach (var item in Model.SparePartArray)
+      {
+          <p>@item</p>
+      }
+        <div class="form-group col-md-12">
+            <label>Customer Type</label>
+            <select class="form-control" asp-for="OrganizationTypeId" onchange="ChangeOrganizationType(this)" style="width:100%;" asp-items="Model.OrganizationTypeList">
+                <option value="" selected>Please select Customer Type</option>
+            </select>
+            <span class="text-danger" asp-validation-for="OrganizationTypeId"></span>
+        </div>
+        <div class="form-group OrganizationDiv d-none">
+            <label for="inputAddress2">Organization</label>
+            <select class="form-control organization-select" asp-for="OrganizationId" asp-items="Model.OrganizationList" style="width:100%;">
+            </select>
+            <span class="text-danger" asp-validation-for="OrganizationId"></span>
+        </div>
+        <div class="form-group CustomerDiv d-none">
+            <label for="inputAddress2">Customer</label>
+            <select class="form-control customer-select" asp-for="CustomerId" asp-items="Model.CustomerList" style="width:100%;">
+            </select>
+            <span class="text-danger" asp-validation-for="CustomerId"></span>
+        </div>
+        <div class="form-group col-md-12">
             <label>Work Type</label>
-            <select class="form-control" asp-for="WorkTypeId" onchange="ChangeWorkType(this)"  style="width:100%;">
+            <select class="form-control" asp-for="WorkTypeId" onchange="ChangeWorkType(this)" style="width:100%;">
                 <option value="" selected>Please select Work Type</option>
                 <option value="@WorkTypeEnum.SparePart.GetHashCode()">@WorkTypeEnum.SparePart.GetEnumDescription()</option>
                 <option value="@WorkTypeEnum.Repair.GetHashCode()">@WorkTypeEnum.Repair.GetEnumDescription()</option>
                 <option value="@WorkTypeEnum.All.GetHashCode()">@WorkTypeEnum.All.GetEnumDescription()</option>
             </select>
+            <span class="text-danger" asp-validation-for="WorkTypeId"></span>
         </div>
         <div class="form-group SparePartDiv d-none">
             <label for="inputAddress2">Spare Part</label>
             <select class="form-control sparepart-multipleselect" asp-for="SparePartId" asp-items="Model.SparePartList"
                     onchange="ChangeSparePart(this)" multiple style="width:100%;">
             </select>
+            <span class="text-danger" asp-validation-for="SparePartId"></span>
             <div class="DynamicSparePartDiv">
             </div>
         </div>
         <div class="form-group ReparingDiv d-none">
-            <label for="inputAddress2">Reparing</label>
-            <partial name="_SingleReparingFieldsPartialView" />
+            <label for="inputAddress2">Repairing Work</label>
+            <select class="form-control repairing-multipleselect" asp-for="ReparingWorkId" asp-items="Model.RepairingWorkList"
+                    onchange="ChangeRepairingWork(this)" multiple style="width:100%;">
+            </select>
+            <span class="text-danger" asp-validation-for="ReparingWorkId"></span>
             <div class="DynamicReparingDiv">
             </div>
         </div>
-        @*<div class="form-row">
-            <div class="form-group col-md-6">
-                <label asp-for="LaborAmount">Labor Amount</label>
-                <input type="email" class="form-control" asp-for="LaborAmount" placeholder="Email">
-                <span asp-validation-for="LaborAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-6">
-                <label asp-for="LaborAmount">Labor Amount</label>
-                <input type="email" class="form-control" asp-for="LaborAmount" placeholder="Email">
-                <span asp-validation-for="LaborAmount" class="text-danger"></span>
-            </div>
-        </div>*@
-        <div class="form-group">
-            <label for="inputAddress2">Address 2</label>
-            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputCity">City</label>
-                <input type="text" class="form-control" id="inputCity">
-            </div>
-            <div class="form-group col-md-4">
-                <label for="inputState">State</label>
-                <select id="inputState" class="form-control">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                </select>
-            </div>
-            <div class="form-group col-md-2">
-                <label for="inputZip">Zip</label>
-                <input type="text" class="form-control" id="inputZip">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck">
-                <label class="form-check-label" for="gridCheck">
-                    Check me out
-                </label>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Sign in</button>
-    </form>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary">Save changes</button>
-</div>
-
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+</form>
 <script>
     $(document).ready(function () {
         $('.sparepart-multipleselect').select2({
-            placeholder: "Please select Spare Part",
+            placeholder: "Please select spare part",
             allowClear: true
+        });
+        $('.repairing-multipleselect').select2({
+            placeholder: "Please select repairing work",
+            allowClear: true
+        });
+        if($('#Id').val() != null || $('#Id').val() != '' || $('#Id').val() != 0)
+        {
+            let WorkTypeId = $('#WorkTypeId').val();
+            HandleWorkTypeUI(WorkTypeId);
+            var vals=$('.mail-contacts').map(function(){
+                debugger;
+                return $(this).val()
+            }).get();
+            console.log(vals);
+        }
+    });
+
+    $('#QuotationForm').on('submit', function () {
+        if(!$(this).valid()){
+            return false;
+        }
+        let CarNo = $('#CarNo').val();
+        let CreatedDate = $('#CreatedDate').val();
+        let OrganizationTypeId = $('#OrganizationTypeId').val();
+
+        if(OrganizationTypeId == '1'){ //organization type is organization
+            var OrganizationId = $('#OrganizationId').val();
+        }
+        else if(OrganizationTypeId == '2'){ //organization type is customer
+            var OrganizationId = $('#CustomerId').val();
+        }
+        else{
+            toastr.error('Please select organization');
+            return false;
+        }
+
+        let WorkTypeId = $('#WorkTypeId').val();
+        let SelectedSparePartArray = [];
+        let SelectedRepairWorkArray = [];
+        if(WorkTypeId == '1'){ //work type is spare part
+            SelectedSparePartArray  = GetAllSpareParts();
+        }
+        else if(WorkTypeId == '2'){ //work type is repair
+            SelectedRepairWorkArray  = GetAllRepairingWork();
+
+        }
+        else if(WorkTypeId == '3'){ //work type is all
+            SelectedSparePartArray  = GetAllSpareParts();
+            SelectedRepairWorkArray  = GetAllRepairingWork();
+        }
+        else{
+            toastr.error('Please select work type');
+            return false;
+        }
+        if($(".DynamicSparePartDiv .sparepart").find('#SparePart_SparePartQuantity').val() == '' || $(".DynamicSparePartDiv .sparepart").find('#SparePart_SparePartQuantity').val() == '0'){
+            return false;
+        }
+        if($(".DynamicReparingDiv .repairwork").find('#RepairWork_RepairingWorkPrice').val() == '' || $(".DynamicReparingDiv .repairwork").find('#RepairWork_RepairingWorkPrice').val() == '0'){
+            return false;
+        }
+        let QuotationDTOobj = {
+            CarNo:CarNo,
+            InvoiceDate:CreatedDate,
+            OrganizationTypeId : OrganizationTypeId,
+            OrganizationId : OrganizationId,
+            WorkTypeId : WorkTypeId,
+            SparePartSerializeString : JSON.stringify(SelectedSparePartArray),
+            RepairingSerializeString : JSON.stringify(SelectedRepairWorkArray),
+            QuotationNo : $('#QuotationNo').val(),
+            Id : $('#Id').val(),
+            OrganizationTypeId : OrganizationTypeId
+        }
+        $.ajax({
+            url: "/Quotation/AddUpdateQuotationForm",
+            type: "post",
+            data: {QuotationDTO:JSON.stringify(QuotationDTOobj)},
+            success: function (response) {
+                if(response!= null && response.IsSuccessful){
+                    $.ajax({
+                        url: "/Quotation/GetAllRecords",
+                        type: "get",
+                        success: function (res) {
+                            if(res!= ''){
+                                $('#grid_div').html(res);
+                            }
+                        }
+                    });
+                    toastr.success(response.Message);
+                     $('#QuotationModal').modal('hide');
+                }
+                else{
+                    toastr.error(response.Message);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
         });
     });
 
+    function GetAllSpareParts(){
+        let SelectedSparePartArray = [];
+        $(".DynamicSparePartDiv .sparepart").each(function () {
+            if($(this).find('#SparePart_SparePartQuantity').val() == '' || $(this).find('#SparePart_SparePartQuantity').val() == '0')
+                {
+                    toastr.error('Please enter quantity');
+                    return false;
+                }
+            let obj = { SparePartId:$(this).find('#SparePart_SparePartName').attr('data-SparePartId'),SparePartQuantity:$(this).find('#SparePart_SparePartQuantity').val(),
+            Price : $(this).find('#SparePart_Price').val(),TaxApply : $(this).find('#SparePart_TaxApply')[0].checked};
+            SelectedSparePartArray.push(obj);
+        });
+        return SelectedSparePartArray;
+    }
+    function GetAllRepairingWork(){
+        let SelectedRepairWorkArray = [];
+        $(".DynamicReparingDiv .repairwork").each(function () {
+            if($(this).find('#RepairWork_RepairingWorkPrice').val() == '' || $(this).find('#RepairWork_RepairingWorkPrice').val() == '0')
+            {
+                toastr.error('Please enter price of repairing');
+                return false;
+            }
+            let obj = { RepairingWorkId:$(this).find('#RepairWork_RepairingWorkName').attr('data-RepairingWorkId'),
+                RepairingWorkPrice:$(this).find('#RepairWork_RepairingWorkPrice').val(),TaxApply : $(this).find('#RepairWork_TaxApply')[0].checked};
+            SelectedRepairWorkArray.push(obj);
+        });
+        return SelectedRepairWorkArray;
+    }
 </script>

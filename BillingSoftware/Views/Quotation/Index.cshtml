@@ -1,4 +1,4 @@
-﻿@model IList<Billing.DTOs.DTOs.QuotationDTO>;
+﻿@model IEnumerable<Billing.DTOs.DTOs.QuotationListDTO>;
 @{
     Layout = "~/Views/Shared/_layout.cshtml";
 }
@@ -13,15 +13,15 @@
                     <h6 class="m-0 font-weight-bold text-primary">SpareParts Listing</h6>
                 </div>
                 <div class="card-header py-3">
-                    <a data-ajax="true"
-                       data-ajax-method="get"
-                       data-ajax-mode="replace"
-                       data-ajax-success="addUpdateQuotationSuccess"
-                       data-ajax-url="@Url.Action("AddUpdateQuotationForm", "Quotation")">
-                        <input type='button' value='Add Quotation' class="btn btn-primary" />
+                    <a  class="btn btn-primary text-white" 
+                        data-ajax="true"
+                        data-ajax-method="get"
+                        data-ajax-mode="replace"
+                        data-ajax-success="addUpdateQuotationSuccess"
+                        data-ajax-url="@Url.Action("AddUpdateQuotationForm", "Quotation")"> Add Quotation
                     </a>
                 </div>
-                <div class="card-body">
+                <div class="card-body" id="grid_div">
                     <partial name="_QuotationGrid" />
                 </div>
             </div>

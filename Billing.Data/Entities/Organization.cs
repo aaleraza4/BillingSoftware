@@ -9,11 +9,11 @@ using static Billing.Enum.OrganizationEnum;
 namespace Billing.Data.Entities
 {
     [Table("billing_organization")]
-    public class Organization:BaseEntity
+    public class Organization : BaseEntity
     {
         public string Name { get; set; }
         public OrganizationType OrganizationType { get; set; }
-        public ICollection<Quotation> Quotations{ get; set; }
-        public ICollection<Bill> Bills{ get; set; }
+        public ICollection<Quotation> Quotations { get; set; }
+        public ICollection<Bill> Bills { get; set; }
     }
 }

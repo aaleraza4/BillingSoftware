@@ -7,12 +7,15 @@ using System.Threading.Tasks;
 
 namespace Billing.Data.Entities
 {
-    [Table("billing_bill_QuotationRepairing")]
+    [Table("billing_quotation_QuotationRepairing")]
     public class QuotationRepairing
     {
         public long Id { get; set; }
         public long RepairingId { get; set; }
-        public long Rate { get; set; }
+        public bool TaxApplied { get; set; }
+        public decimal? TaxAmount { get; set; }
+        public decimal? TaxPercent { get; set; }
+        public decimal Rate { get; set; }
         [ForeignKey("RepairingId")]
         public virtual Repairing Repairing { get; set; }
         public long QuotationId { get; set; }

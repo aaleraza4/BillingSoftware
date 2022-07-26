@@ -1,4 +1,4 @@
-﻿@model IList<Billing.DTOs.DTOs.QuotationDTO>;
+﻿@model IEnumerable<Billing.DTOs.DTOs.QuotationListDTO>;
 @{
 
     var _inc = 1;
@@ -8,14 +8,12 @@
         <thead>
             <tr>
                 <th width="5%" class="text-center">Serial No.</th>
-                <th>QuotationNo</th>
-                <th>CarNo</th>
-                <th>LaborAmount</th>
-                <th>Quantity</th>
-                <th>Rate</th>
-                <th>RepairAmount</th>
+                <th>Quotation  No</th>
+                <th>Car No</th>
                 <th>Status</th>
-                <th>TotalAmount</th>
+                <th>Total Amount</th>
+                <th>GST Amount</th>
+                <th>FST Amount</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -29,14 +27,17 @@
                         <td width="5%" class="text-center">@_inc</td>
                         <td>@item?.QuotationNo</td>
                         <td>@item?.CarNo</td>
-                        <td>@item?.LaborAmount</td>
-                        <td>@item?.Quantity</td>
-                        <td>@item?.Rate</td>
-                        <td>@item?.RepairAmount</td>
-                        <td>@item?.Status</td>
+                        <td>@item?.StatusName</td>
                         <td>@item?.TotalAmount</td>
+                        <td>@item?.TotalGstTax</td>
+                        <td>@item?.TotalRepairTax</td>
                         <td>
-                            <a href='@Url.Action("EditQuotation", "Quotation",new { id=item?.Id})'>
+                            <a 
+                                data-ajax="true"
+                                data-ajax-method="get"
+                                data-ajax-mode="replace"
+                                data-ajax-success="addUpdateQuotationSuccess"
+                                href='@Url.Action("EditQuotation", "Quotation",new { id=item?.Id})'>
                                 <span>Edit</span>
                             </a>
                         </td>
