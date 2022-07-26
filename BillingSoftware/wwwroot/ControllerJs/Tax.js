@@ -1,14 +1,14 @@
-﻿function addUpdateRepairWorkSuccess(res) {
-    $('.repairing-modal-body').html(res);
-    $('#RepairWorkModal').modal('show');
+﻿function addUpdateTaxSuccess(res) {
+    $('.tax-modal-body').html(res);
+    $('#TaxModal').modal('show');
 }
 function addUpdatePostSuccess(res) {
     $('.grid-div').html(res);
-    $('#RepairWorkModal').modal('hide');
+    $('#TaxModal').modal('hide');
 }
-var Billing_RepairWork = function () {
+var Billing_Tax = function () {
     return {
-        DeleteRepairWork(url, id) {
+        DeleteTax(url, id) {
             swal({
                 title: "Warning",
                 text: "Are You sure want to Delete?",

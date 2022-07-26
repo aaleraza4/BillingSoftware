@@ -55,5 +55,12 @@ namespace BillingSoftware.Controllers
             return RepairWork;
 
         }
+        [HttpGet]
+        public async Task<IActionResult> DeleteRepairWork(long id)
+        {
+            var model = await _repairingService.DeleteRepairingWork(id);
+            var AllRepariWork = GetAllRepairWork();
+            return PartialView("_RepairingGrid", AllRepariWork);
+        }
     }
 }

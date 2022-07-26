@@ -14,7 +14,7 @@ namespace Billing.Business.Services
         List<TaxDTO> GetAllTax();
         Task<TaxDTO> GetTaxById(long id);
         Task<bool> UpdateTax(TaxDTO taxDTO);
-        Task<bool> DeleteTax(TaxDTO taxDTO);
+        Task<bool> DeleteTax(long id);
         IEnumerable<SelectListItem> GetAllTaxsForDropdown();
     }
 }

@@ -14,7 +14,7 @@ namespace Billing.Business.Services.RepairingService
         List<RepairingDTO> GetAllRepairingwWork();
         Task<RepairingDTO> GetRepairingWorkById(long id);
         Task<bool> UpdateRepairingWork(RepairingDTO repairingDTO);
-        Task<bool> DeleteRepairingWork(RepairingDTO repairingDTO);
+        Task<bool> DeleteRepairingWork(long id);
         IEnumerable<SelectListItem> GetAllRepairingWorkForDropdown();
     }
 }

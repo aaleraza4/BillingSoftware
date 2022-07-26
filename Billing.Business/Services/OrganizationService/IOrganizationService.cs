@@ -14,7 +14,7 @@ namespace Billing.Business.Services
         List<OrganizationDTO> GetAllOrganization();
         Task<OrganizationDTO> GetOrganizationById(long id);
         Task<bool> UpdateOrganization(OrganizationDTO organizationDTO);
-        Task<bool> DeleteOrganization(OrganizationDTO organizationDTO);
+        Task<bool> DeleteOrganization(long id);
         IEnumerable<SelectListItem> GetAllOrganizationForDropdown();
         IEnumerable<SelectListItem> GetAllCustomerForDropdown();
     }

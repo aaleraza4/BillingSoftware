@@ -8,11 +8,10 @@
     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
             <tr>
-                <th>Id</th>
+                <th width="5%" class="text-center">Serial No.</th>
                 <th>Name</th>
                 <th>Type</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -24,15 +23,20 @@
                         <td width="5%" class="text-center">@_inc</td>
                         <td>@item?.Name</td>
                         <td>@item?.OrganizationType?.GetEnumDescription()</td>
+
                         <td>
-                            <a href='@Url.Action("EditOrganization", "Organization",new { id=item?.Id})'>
-                                <span>Edit</span>
-                            </a>
+                            <a data-ajax="true"
+                               data-ajax-method="get"
+                               data-ajax-mode="replace"
+                               data-ajax-success="addUpdateOrganizationSuccess"
+                               data-ajax-url="@Url.Action("EditOrganization", "Organization",new { Id=item?.Id})">Edit</a>
                         </td>
                         <td>
-                            <a href='@Url.Action("DeleteOrganization", "Organization",new { id=item?.Id})'>
+                            <a href="javascript:void(0)" onclick="Billing_Organization.DeleteOrganization('/Organization/DeleteOrganization', '@item.Id')">
                                 <span>Delete</span>
+
                             </a>
+                            
                         </td>
                     </tr>
                     _inc = _inc + 1;

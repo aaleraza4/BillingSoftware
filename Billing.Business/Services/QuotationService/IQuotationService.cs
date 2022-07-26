@@ -10,6 +10,6 @@ namespace Billing.Business.Services
         Task<List<QuotationListDTO>> GetAllQuotation();
         Task<QuotationDTO> GetQuotationById(long id);
         Task<bool> UpdateQuotation(QuotationDTO QuotationDTO);
-        Task<bool> DeleteQuotation(QuotationDTO QuotationDTOs);
+        Task<bool> DeleteQuotation(long id);
     }
 }

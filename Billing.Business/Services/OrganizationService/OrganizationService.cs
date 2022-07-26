@@ -27,22 +27,18 @@ namespace Billing.Business.Services
         {
             try
             {
-                var organization = await _organizationRepo.Get(entity?.Id);
-                if (organization == null)
+                var DBresult = await _organizationRepo.GetAll().Where(x => x.Id == entity.Id).FirstOrDefaultAsync();
+                DBresult = DBresult == null ? new Organization() : DBresult;
+                DBresult.Name = entity.Name;
+                DBresult.OrganizationType = entity.OrganizationType.Value;
+                if (entity.Id == 0)
                 {
-                    organization = new();
-                }
-                organization = _mapper.Map<Organization>(entity);
-                if (entity?.Id == 0)
-                {
-                    await _organizationRepo.Add(organization);
-
+                    await _organizationRepo.Add(DBresult);
                 }
                 else
                 {
-                    await _organizationRepo.Change(organization);
+                    await _organizationRepo.Change(DBresult);
                 }
-
                 return true;
             }
             catch (Exception ex)
@@ -85,14 +81,14 @@ namespace Billing.Business.Services
             }
 
         }
-        public async Task<bool> DeleteOrganization(OrganizationDTO organizationDTO)
+        public async Task<bool> DeleteOrganization(long id)
         {
             try
             {
-                organizationDTO.IsDeleted = true;
-                organizationDTO.DeletedDate = DateTime.Now;
-                var entity = _mapper.Map<Organization>(organizationDTO);
-                await _organizationRepo.Change(entity);
+                var model = await _organizationRepo.GetAll().Where(x => x.Id == id)?.FirstOrDefaultAsync();
+                model.IsDeleted = true;
+                model.DeletedDate = DateTime.Now;
+                await _organizationRepo.Change(model);
                 return true;
             }
             catch (Exception ex)

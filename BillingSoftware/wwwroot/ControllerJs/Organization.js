@@ -1,14 +1,14 @@
-﻿function addUpdateRepairWorkSuccess(res) {
-    $('.repairing-modal-body').html(res);
-    $('#RepairWorkModal').modal('show');
+﻿function addUpdateOrganizationSuccess(res) {
+    $('.organization-modal-body').html(res);
+    $('#OrganizationModal').modal('show');
 }
 function addUpdatePostSuccess(res) {
     $('.grid-div').html(res);
-    $('#RepairWorkModal').modal('hide');
+    $('#OrganizationModal').modal('hide');
 }
-var Billing_RepairWork = function () {
+var Billing_Organization = function () {
     return {
-        DeleteRepairWork(url, id) {
+        DeleteOrganization(url, id) {
             swal({
                 title: "Warning",
                 text: "Are You sure want to Delete?",
