@@ -92,33 +92,34 @@ namespace BillingSoftware.Controllers
 
         public async Task<IActionResult> AddUpdateQuotationForm(string QuotationDTO)
         {
-            var model = JsonConvert.DeserializeObject<RequestQuotationDTO>(QuotationDTO);
-            model.SparePartList = JsonConvert.DeserializeObject<List<SparePartFieldDTO>>(model.SparePartSerializeString);
-            model.RepairWorkList = JsonConvert.DeserializeObject<List<RepairingWorkFieldDTO>>(model.RepairingSerializeString);
-            if (QuotationDTO != null)
-            {
-                var Response = await _quotationService.AddUpdateQuotation(model);
-                if (Response.IsSuccessful)
+      
+                var model = JsonConvert.DeserializeObject<RequestQuotationDTO>(QuotationDTO);
+                model.SparePartList = JsonConvert.DeserializeObject<List<SparePartFieldDTO>>(model.SparePartSerializeString);
+                model.RepairWorkList = JsonConvert.DeserializeObject<List<RepairingWorkFieldDTO>>(model.RepairingSerializeString);
+                if (QuotationDTO != null)
                 {
-                    if (User.Identity.IsAuthenticated)
+                    var Response = await _quotationService.AddUpdateQuotation(model);
+                    if (Response.IsSuccessful)
                     {
-                        ClaimsPrincipal cp = this.User;
-                        var data = cp.Identities.ToList();
-                        var QuotationId = data[0].FindFirst(c => c.Type == "QuotationNo").Value;
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            ClaimsPrincipal cp = this.User;
+                            var data = cp.Identities.ToList();
+                            var QuotationId = data[0].FindFirst(c => c.Type == "QuotationNo").Value;
 
+                        }
+                        //var UserData = await _userManager.FindByIdAsync(SessionUser.UserId);
+                        //var MyClaims = await _userManager.GetClaimsAsync(UserData);
+                        //var OldQuotationNumber = MyClaims.Where(o => o.Type.Equals("QuotationNo")).FirstOrDefault();
+                        //await _userManager.RemoveClaimAsync(UserData, OldQuotationNumber);
+                        //var FirstNameClaim = new Claim("QuotationNo", OldQuotationNumber.Value+1);
+                        //await _userManager.AddClaimAsync(UserData, FirstNameClaim);
+                        //await _signInManager.RefreshSignInAsync(UserData);
+                        return Json(Response);
                     }
-                    //var UserData = await _userManager.FindByIdAsync(SessionUser.UserId);
-                    //var MyClaims = await _userManager.GetClaimsAsync(UserData);
-                    //var OldQuotationNumber = MyClaims.Where(o => o.Type.Equals("QuotationNo")).FirstOrDefault();
-                    //await _userManager.RemoveClaimAsync(UserData, OldQuotationNumber);
-                    //var FirstNameClaim = new Claim("QuotationNo", OldQuotationNumber.Value+1);
-                    //await _userManager.AddClaimAsync(UserData, FirstNameClaim);
-                    //await _signInManager.RefreshSignInAsync(UserData);
                     return Json(Response);
                 }
-                return Json(Response);  
-            }
-            return RedirectToAction("Quotation", "Quotation");
+                return RedirectToAction("Quotation", "Quotation");
         }
 
         // GET: OrganizationController/Edit/5
@@ -161,11 +162,10 @@ namespace BillingSoftware.Controllers
             var quotation = GetAllQuotation();
             return PartialView("_QuotationGrid", quotation);
         }
-        public IEnumerable<QuotationDTO> GetAllQuotation()
+        public async Task<List<QuotationListDTO>> GetAllQuotation()
         {
-            var quotation = _quotationService.GetAllQuotation().ToList();
+            var quotation = await _quotationService.GetAllQuotation();
             return quotation;
-
         }
         
     }

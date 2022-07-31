@@ -15,7 +15,7 @@
     <div class="modal-body">
         <input type="hidden" asp-for = "Id"/>
         <input type="hidden" asp-for = "QuotationNo"/>
-        <input type="text" asp-for = "SparePartArray" class="mail-contacts"  value = "@ViewBag.SparePartArray" />
+        <input type="hidden" asp-for = "SparePartArray" class="mail-contacts"  value = "@ViewBag.SparePartArray" />
         <input type="hidden" asp-for = "RepairingWorkArray" class="mail-contacts" value = "@ViewBag.RepairingWorkArray" />
         <label>Quotation No: @Model.QuotationNo</label><br />
         <div class="form-row">
@@ -35,10 +35,10 @@
                 </div>*@
         </div>
 
-       @foreach (var item in Model.SparePartArray)
+@*       @foreach (var item in Model.SparePartArray)
       {
           <p>@item</p>
-      }
+      }*@
         <div class="form-group col-md-12">
             <label>Customer Type</label>
             <select class="form-control" asp-for="OrganizationTypeId" onchange="ChangeOrganizationType(this)" style="width:100%;" asp-items="Model.OrganizationTypeList">
