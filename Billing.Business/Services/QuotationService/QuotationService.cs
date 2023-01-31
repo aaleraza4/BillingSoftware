@@ -216,6 +216,12 @@ namespace Billing.Business.Services
             }
         }
 
+
+        public Task<SparePartFieldDTO> GetAllSparePartAgainstQuotation(long id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<QuotationDTO> GetQuotationById(long id)
         {
             try
@@ -228,10 +234,10 @@ namespace Billing.Business.Services
                         Id = x.Id,
                         WorkTypeId = x.WorkTypeId.GetHashCode(),
                         OrganizationTypeId = x.OrganizationTypeId .GetHashCode(),
-                        RepairingWorkArray = x.QuotationRepairings.Select(x=>x.Id.ToString()).ToArray().Length > 0?
-                        x.QuotationRepairings.Select(x => x.Id.ToString()).ToArray() : null,
-                        SparePartArray = x.QuotationSpareParts.Select(x => x.Id.ToString()).ToArray().Length > 0 ?
-                        x.QuotationSpareParts.Select(x => x.Id.ToString()).ToArray() : null,
+                        //RepairingWorkArray = x.QuotationRepairings.Select(x=>x.Id.ToString()).ToArray().Length > 0?
+                        //x.QuotationRepairings.Select(x => x.Id.ToString()).ToArray() : null,
+                        //SparePartArray = x.QuotationSpareParts.Select(x => x.Id.ToString()).ToArray().Length > 0 ?
+                        //x.QuotationSpareParts.Select(x => x.Id.ToString()).ToArray() : null,
                     }).FirstOrDefaultAsync();
                 return entity;
             }

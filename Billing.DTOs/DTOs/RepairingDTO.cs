@@ -20,4 +20,9 @@ namespace Billing.DTOs.DTOs
         public decimal RepairingWorkPrice { get; set; }
         public bool TaxApply { get; set; }
     }
+    public class RepairingWorkForMultiSelectDTO
+    {
+        public long Id { get; set; }
+        public string Text { get; set; }
+    }
 }

@@ -15,8 +15,6 @@
     <div class="modal-body">
         <input type="hidden" asp-for = "Id"/>
         <input type="hidden" asp-for = "QuotationNo"/>
-        <input type="hidden" asp-for = "SparePartArray" class="mail-contacts"  value = "@ViewBag.SparePartArray" />
-        <input type="hidden" asp-for = "RepairingWorkArray" class="mail-contacts" value = "@ViewBag.RepairingWorkArray" />
         <label>Quotation No: @Model.QuotationNo</label><br />
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -80,7 +78,7 @@
         <div class="form-group ReparingDiv d-none">
             <label for="inputAddress2">Repairing Work</label>
             <select class="form-control repairing-multipleselect" asp-for="ReparingWorkId" asp-items="Model.RepairingWorkList"
-                    onchange="ChangeRepairingWork(this)" multiple style="width:100%;">
+                    onchange="ChangeRepairingWork(this)" multiple  style="width:100%;">
             </select>
             <span class="text-danger" asp-validation-for="ReparingWorkId"></span>
             <div class="DynamicReparingDiv">
@@ -96,21 +94,55 @@
     $(document).ready(function () {
         $('.sparepart-multipleselect').select2({
             placeholder: "Please select spare part",
-            allowClear: true
+            allowClear: true,
+            closeOnSelect: true,
         });
-        $('.repairing-multipleselect').select2({
-            placeholder: "Please select repairing work",
-            allowClear: true
-        });
+        //$('.repairing-multipleselect').select2({
+        //    placeholder: "Please select repairing work",
+        //    allowClear: true
+        //});
+        if ($('#OrganizationTypeId').val() != null) {
+            $('#OrganizationTypeId').trigger('change');
+        }
+
         if($('#Id').val() != null || $('#Id').val() != '' || $('#Id').val() != 0)
         {
             let WorkTypeId = $('#WorkTypeId').val();
+            let QuotationId = $('#Id').val();
             HandleWorkTypeUI(WorkTypeId);
-            var vals=$('.mail-contacts').map(function(){
-                debugger;
-                return $(this).val()
-            }).get();
-            console.log(vals);
+            if (WorkTypeId == '2') {
+                $.ajax({
+                    url: "/Quotation/GetAllReparingAgainstQuotation",
+                    data: {QuotationId:QuotationId},
+                    type: "get",
+                    success: function(res) {
+                        debugger;
+                        let a = ["1"];
+                        $(".repairing-multipleselect").select2({
+                            //data: res,
+                            tags: true,
+                            data:a
+                        }).trigger('change');
+                        //$(".repairing-multipleselect").select2({
+                        //data:res,
+                        //tags: true
+                        //}).trigger('change');
+                        
+                    }
+                });
+            }
+            if (WorkTypeId == '1') {
+                $.ajax({
+                    url: "/Quotation/GetAllSparePartAgainstQuotation",
+                    data: {QuotationId:QuotationId},
+                    type: "get",
+                    success: function(res) {
+                        $(".sparepart-multipleselect").select2({
+                            data: res
+                        });
+                    }
+                });
+            }
         }
     });
 
@@ -176,11 +208,13 @@
             success: function (response) {
                 if(response!= null && response.IsSuccessful){
                     $.ajax({
-                        url: "/Quotation/GetAllRecords",
+                        url: "/Quotation/GetAllQuotation",
                         type: "get",
                         success: function (res) {
                             if(res!= ''){
                                 $('#grid_div').html(res);
+                                $('#dataTable').dataTable();
+                                toastr('Quotation added successfully');
                             }
                         }
                     });

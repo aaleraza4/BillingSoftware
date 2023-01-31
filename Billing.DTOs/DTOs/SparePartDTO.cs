@@ -23,4 +23,10 @@ namespace Billing.DTOs.DTOs
         public decimal Price { get; set; }
         public bool TaxApply { get; set; }
     }
+
+    public class SparePartForMultiSelectDTO
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+    }
 }

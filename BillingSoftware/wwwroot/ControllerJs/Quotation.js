@@ -119,10 +119,10 @@ var Billing_Quotation = function () {
                     swal.close();
                     $.get(url, { Id: id }, function (res) {
                         // Get values from Doms
-                        debugger;
-                        if (res.Response != "") {
-                            $('.grid-div').html(res);
+                        if (res != "") {
+                            $('#grid_div').html(res);
                             toastr.success('Record successfully deleted');
+                            $('#dataTable').dataTable();
                         }
                         else {
                             toastr.error("Something went wrong");

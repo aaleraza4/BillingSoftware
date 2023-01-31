@@ -1,4 +1,5 @@
 ﻿using Billing.Business.Services;
+using Billing.Business.Services.QuotationRepairingService;
 using Billing.Business.Services.RepairingService;
 using Billing.Business.Services.ViewRenderService;
 using Billing.Common.Helper;
@@ -25,13 +26,15 @@ namespace BillingSoftware.Controllers
         private readonly IRepairingService _repairingService;
         private readonly UserManager<Users> _userManager;
         private readonly SignInManager<Users> _signInManager;
+        private readonly IQuotationRepairingService _quotationRepairingService;
 
         public QuotationController(IQuotationService quotationSerivce,
             IOrganizationService organizationService,
             ISparePartsService sparePartsService,
             IRepairingService repairingService,
             UserManager<Users> userManager,
-            SignInManager<Users> signInManager)
+            SignInManager<Users> signInManager,
+            IQuotationRepairingService quotationRepairingService)
         {
             _quotationService = quotationSerivce;
             _organizationService = organizationService;
@@ -39,6 +42,7 @@ namespace BillingSoftware.Controllers
             _repairingService = repairingService;
             _userManager = userManager;
             _signInManager = signInManager;
+            _quotationRepairingService = quotationRepairingService;
         }
 
         public async Task<IActionResult> Index()
@@ -126,8 +130,6 @@ namespace BillingSoftware.Controllers
         public async Task<IActionResult> EditQuotation(long id)
         {
             var model = await _quotationService.GetQuotationById(id);
-            ViewBag.SparePartArray = model.SparePartArray;
-            ViewBag.RepairingWorkArray = model.RepairingWorkArray;
             model.OrganizationList = _organizationService.GetAllOrganizationForDropdown();
             model.OrganizationTypeList = Helper.GetEnumList<OrganizationType>();
             model.CustomerList = _organizationService.GetAllCustomerForDropdown();
@@ -159,13 +161,18 @@ namespace BillingSoftware.Controllers
         public async Task<IActionResult> DeleteQuotation(long id)
         {
             var model = await _quotationService.DeleteQuotation(id);
-            var quotation = GetAllQuotation();
-            return PartialView("_QuotationGrid", quotation);
+            return await GetAllQuotation();
         }
-        public async Task<List<QuotationListDTO>> GetAllQuotation()
+        public async Task<IActionResult> GetAllQuotation()
         {
             var quotation = await _quotationService.GetAllQuotation();
-            return quotation;
+            return PartialView("_QuotationGrid", quotation);
+        }
+        
+        public async Task<IActionResult> GetAllReparingAgainstQuotation(long QuotationId)
+        {
+            var Response= await _quotationRepairingService.GetAllRepairingWorkAgainstQuotation(QuotationId);
+            return Json(Response);
         }
         
     }
