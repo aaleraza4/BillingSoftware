@@ -39,14 +39,15 @@ function ChangeSparePart(e) {
     //let SparePartId = $(e).val();
     let SparePartArray = [];
     let TotalSparePart = $(e).select2('data').length;
+    let QuotationId = $('#Id').val();
     for (var i = 0; i < TotalSparePart; i++) {
-        let obj = { SparePartName: $(e).select2('data')[i].text, SparePartId: $(e).select2('data')[i].id, SparePartQuantity: '1' }
+        let obj = { SparePartName: $(e).select2('data')[i].text, SparePartId: $(e).select2('data')[i].id/*, SparePartQuantity: '1'*/ }
         SparePartArray.push(obj);
     }
     $.ajax({
         url: "/Quotation/GetSparePartFieldUI",
         method: "get",
-        data: { model: JSON.stringify(SparePartArray) },
+        data: { model: JSON.stringify(SparePartArray), QuotationId: QuotationId},
         success: function (res) {
             $(".DynamicSparePartDiv").html(res);
         }
@@ -56,6 +57,7 @@ function ChangeRepairingWork(e) {
     //let RepairingWorkId = $(e).val();
     let RepairingWorkArray = [];
     let RepairingWorkLength = $(e).select2('data').length;
+    let QuotationId = $('#Id').val();
     for (var i = 0; i < RepairingWorkLength; i++) {
         let obj = { RepairingWorkName: $(e).select2('data')[i].text, RepairingWorkId: $(e).select2('data')[i].id/*, SparePartQuantity : '1'*/ }
         RepairingWorkArray.push(obj);
@@ -63,7 +65,7 @@ function ChangeRepairingWork(e) {
     $.ajax({
         url: "/Quotation/GetReparingWorkFieldsUI",
         method: "get",
-        data: { model: JSON.stringify(RepairingWorkArray) },
+        data: { model: JSON.stringify(RepairingWorkArray), QuotationId: QuotationId },
         success: function (res) {
             $(".DynamicReparingDiv").html(res);
         }

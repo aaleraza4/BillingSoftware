@@ -6,7 +6,9 @@
         <div class="form-row sparepart SpartPart-@SparePart.SparePartId">
             <div class="form-group col-md-4">
                 <label asp-for="@SparePart.SparePartName">Name</label>
-                <input type="text" class="form-control" data-SparePartId="@SparePart.SparePartId" asp-for="@SparePart.SparePartName" placeholder="Enter Spare Part" readonly>
+                <input type="text" class="form-control" data-SparePartId="@SparePart.SparePartId"
+                       data-PrimaryKeyId ="@SparePart.QuotationSparePartId"
+                       asp-for="@SparePart.SparePartName" placeholder="Enter Spare Part" readonly>
             </div>
             <div class="form-group col-md-4">
                 <label asp-for="@SparePart.SparePartQuantity">Quantity</label>

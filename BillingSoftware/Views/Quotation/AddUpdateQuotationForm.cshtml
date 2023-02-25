@@ -15,6 +15,8 @@
     <div class="modal-body">
         <input type="hidden" asp-for = "Id"/>
         <input type="hidden" asp-for = "QuotationNo"/>
+        <input type="hidden" asp-for = "ReparingIds" id="hdnReparingIds"/>
+        <input type="hidden" asp-for = "SparepartIds" id="hdnSparePartIds"/>
         <label>Quotation No: @Model.QuotationNo</label><br />
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -97,53 +99,33 @@
             allowClear: true,
             closeOnSelect: true,
         });
-        //$('.repairing-multipleselect').select2({
-        //    placeholder: "Please select repairing work",
-        //    allowClear: true
-        //});
+        $('.repairing-multipleselect').select2({
+            placeholder: "Please select repairing work",
+            allowClear: true
+        });
         if ($('#OrganizationTypeId').val() != null) {
             $('#OrganizationTypeId').trigger('change');
         }
-
         if($('#Id').val() != null || $('#Id').val() != '' || $('#Id').val() != 0)
         {
             let WorkTypeId = $('#WorkTypeId').val();
-            let QuotationId = $('#Id').val();
+            //let QuotationId = $('#Id').val();
             HandleWorkTypeUI(WorkTypeId);
-            if (WorkTypeId == '2') {
-                $.ajax({
-                    url: "/Quotation/GetAllReparingAgainstQuotation",
-                    data: {QuotationId:QuotationId},
-                    type: "get",
-                    success: function(res) {
-                        debugger;
-                        let a = ["1"];
-                        $(".repairing-multipleselect").select2({
-                            //data: res,
-                            tags: true,
-                            data:a
-                        }).trigger('change');
-                        //$(".repairing-multipleselect").select2({
-                        //data:res,
-                        //tags: true
-                        //}).trigger('change');
-                        
-                    }
-                });
+            if (WorkTypeId == '2' || WorkTypeId == '3') {
+                let repairingArray = $('#hdnReparingIds').val().split(',');
+                let sparePartArray = $('#hdnSparePartIds').val().split(',');
+                $('.repairing-multipleselect').val(repairingArray).trigger('change');
+                $('.sparepart-multipleselect').val(sparePartArray).trigger('change');
             }
-            if (WorkTypeId == '1') {
-                $.ajax({
-                    url: "/Quotation/GetAllSparePartAgainstQuotation",
-                    data: {QuotationId:QuotationId},
-                    type: "get",
-                    success: function(res) {
-                        $(".sparepart-multipleselect").select2({
-                            data: res
-                        });
-                    }
-                });
-            }
+            if (WorkTypeId == '1' || WorkTypeId == '3') {
+                debugger;
+                let repairingArray = $('#hdnReparingIds').val().split(',');
+                let sparePartArray = $('#hdnSparePartIds').val().split(',');
+                $('.repairing-multipleselect').val(repairingArray).trigger('change');
+                $('.sparepart-multipleselect').val(sparePartArray).trigger('change');
+            }            
         }
+
     });
 
     $('#QuotationForm').on('submit', function () {
@@ -238,9 +220,15 @@
                 {
                     toastr.error('Please enter quantity');
                     return false;
-                }
-            let obj = { SparePartId:$(this).find('#SparePart_SparePartName').attr('data-SparePartId'),SparePartQuantity:$(this).find('#SparePart_SparePartQuantity').val(),
-            Price : $(this).find('#SparePart_Price').val(),TaxApply : $(this).find('#SparePart_TaxApply')[0].checked};
+            }
+            debugger;
+            let obj = {
+                SparePartId: $(this).find('#SparePart_SparePartName').attr('data-SparePartId'),
+                QuotationSparePartId: $(this).find('#SparePart_SparePartName').attr('data-PrimaryKeyId'),
+                SparePartQuantity: $(this).find('#SparePart_SparePartQuantity').val(),
+                Price: $(this).find('#SparePart_Price').val(),
+                TaxApply: $(this).find('#SparePart_TaxApply')[0].checked
+            };
             SelectedSparePartArray.push(obj);
         });
         return SelectedSparePartArray;
@@ -253,7 +241,9 @@
                 toastr.error('Please enter price of repairing');
                 return false;
             }
-            let obj = { RepairingWorkId:$(this).find('#RepairWork_RepairingWorkName').attr('data-RepairingWorkId'),
+            let obj = {
+                RepairingWorkId: $(this).find('#RepairWork_RepairingWorkName').attr('data-RepairingWorkId'),
+                QuotationRepairingWorkId: $(this).find('#RepairWork_RepairingWorkName').attr('data-PrimaryKeyId'),
                 RepairingWorkPrice:$(this).find('#RepairWork_RepairingWorkPrice').val(),TaxApply : $(this).find('#RepairWork_TaxApply')[0].checked};
             SelectedRepairWorkArray.push(obj);
         });

@@ -17,6 +17,7 @@ namespace Billing.DTOs.DTOs
 
     public class SparePartFieldDTO
     {
+        public long QuotationSparePartId  { get; set; }
         public long SparePartId  { get; set; }
         public string SparePartName { get; set; }
         public int SparePartQuantity { get; set; }

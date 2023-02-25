@@ -16,15 +16,22 @@ namespace Billing.Business.Services
     public class QuotationService : IQuotationService
     {
         private readonly IQuotationRepo _quotationRepo;
+        private readonly IQuotationRepairingRepo _quotationRepairingRepo;
+        private readonly IQuotationSparePartRepo _quotationSparePartRepo;
         private readonly ITaxRepo _taxRepo;
         private readonly IMapper _mapper;
 
-        public QuotationService(IQuotationRepo quotationRepo, IMapper mapper,
-            ITaxRepo taxRepo)
+        public QuotationService(IQuotationRepo quotationRepo,
+            IMapper mapper,
+            ITaxRepo taxRepo,
+            IQuotationRepairingRepo quotationRepairingRepo,
+            IQuotationSparePartRepo quotationSparePartRepo)
         {
             _quotationRepo = quotationRepo;
             _mapper = mapper;
             _taxRepo = taxRepo;
+            _quotationRepairingRepo = quotationRepairingRepo;
+            _quotationSparePartRepo = quotationSparePartRepo;
         }
 
         public async Task<ResponseDTO> AddUpdateQuotation(RequestQuotationDTO entity)
@@ -156,12 +163,144 @@ namespace Billing.Business.Services
                 }
                 else
                 {
+                    #region[Edit cases for all work type including sparepart, repairing work or both]
+                    if (DbModel.WorkTypeId == WorkTypeEnum.SparePart)
+                    {
+                        #region Delete all sparepart against quotationId
+                        var AllQuotationSpareParts = await _quotationSparePartRepo.GetAll().Where(x => x.QuotationId == DbModel.Id).ToListAsync();
+                        if (AllQuotationSpareParts != null && AllQuotationSpareParts.Count() > 0)
+                        {
+                            foreach (var item in AllQuotationSpareParts)
+                            {
+                                await _quotationSparePartRepo.Delete(item.Id);
+                            }
+                        }
+                        #endregion
+                        foreach (var sparePart in entity.SparePartList)
+                        {
+                            var TempRateOntheBasisofQuantity = sparePart.SparePartQuantity > 1 ? sparePart.Price * sparePart.SparePartQuantity : sparePart.Price;
+                            decimal? TempTaxAmountOntheBasisofQuantity = sparePart.TaxApply ? (sparePart.SparePartQuantity > 1 ?
+                                ((decimal)TotalGST / 100) * (sparePart.Price * sparePart.SparePartQuantity) :
+                                ((decimal)TotalGST / 100) * sparePart.Price) : null;
 
+                            DbModel.QuotationSpareParts.Add(new QuotationSparePart
+                            {
+                                Quantity = sparePart.SparePartQuantity,
+                                SparePartId = sparePart.SparePartId,
+                                QuotationId = DbModel.Id,
+                                Rate = sparePart.Price,
+                                TaxApplied = sparePart.TaxApply,
+                                TaxPercent = sparePart.TaxApply ? (decimal)TotalGST : null,
+                                TaxAmount = TempTaxAmountOntheBasisofQuantity
+                            });
+                            TotalSparePartAmount += TotalSparePartAmount + TempRateOntheBasisofQuantity;
+                            if (sparePart.TaxApply)
+                                TotalSparePartTaxAmount += TempTaxAmountOntheBasisofQuantity;
+                        }
+                        DbModel.TotalAmount = TotalSparePartAmount;
+                        DbModel.GSTTaxAmount = TotalSparePartTaxAmount;
+                    }
+                    else if (DbModel.WorkTypeId == WorkTypeEnum.Repair)
+                    {
+                        #region Delete all repairing against quotationID
+                        var AllQuotationRepairing = await _quotationRepairingRepo.GetAll().Where(x => x.QuotationId == DbModel.Id).ToListAsync();
+                        if (AllQuotationRepairing != null && AllQuotationRepairing.Count() > 0)
+                        {
+                            foreach (var item in AllQuotationRepairing)
+                            {
+                                await _quotationRepairingRepo.Delete(item.Id);
+                            }
+                        }
+
+                        #endregion
+
+                        foreach (var repairingWork in entity.RepairWorkList)
+                        {
+                            DbModel.QuotationRepairings.Add(new QuotationRepairing
+                            {
+                                Rate = repairingWork.RepairingWorkPrice,
+                                RepairingId = repairingWork.RepairingWorkId,
+                                QuotationId = DbModel.Id,
+                                TaxApplied = repairingWork.TaxApply,
+                                TaxPercent = repairingWork.TaxApply ? (decimal)TotalFST : null,
+                                TaxAmount = repairingWork.TaxApply ? ((decimal)TotalFST / 100) * repairingWork.RepairingWorkPrice : null
+                            });
+                            TotalRepairingAmount = TotalRepairingAmount + repairingWork.RepairingWorkPrice;
+                            if (repairingWork.TaxApply)
+                                TotalRepairingTaxAmount += ((decimal)TotalFST / 100) * repairingWork.RepairingWorkPrice;
+                        }
+                        DbModel.TotalAmount = TotalRepairingAmount;
+                        DbModel.FederalServiceTaxAmount = TotalRepairingTaxAmount;
+                    }
+                    else
+                    {
+                        #region Delete All Existing Entries Against QuotationId
+                        var AllQuotationRepairing = await _quotationRepairingRepo.GetAll().Where(x => x.QuotationId == DbModel.Id).ToListAsync();
+                        if (AllQuotationRepairing != null && AllQuotationRepairing.Count() > 0)
+                        {
+                            foreach (var item in AllQuotationRepairing)
+                            {
+                                await _quotationRepairingRepo.Delete(item.Id);
+                            }
+                        }
+
+                        var AllQuotationSpareParts = await _quotationSparePartRepo.GetAll().Where(x => x.QuotationId == DbModel.Id).ToListAsync();
+                        if (AllQuotationSpareParts != null && AllQuotationSpareParts.Count() > 0)
+                        {
+                            foreach (var item in AllQuotationSpareParts)
+                            {
+                                await _quotationSparePartRepo.Delete(item.Id);
+                            }
+                        }
+                        #endregion
+
+                        foreach (var sparePart in entity.SparePartList)
+                        {
+                            var TempRateOntheBasisofQuantity = sparePart.SparePartQuantity > 1 ? sparePart.Price * sparePart.SparePartQuantity : sparePart.Price;
+                            decimal? TempTaxAmountOntheBasisofQuantity = sparePart.TaxApply ? (sparePart.SparePartQuantity > 1 ?
+                                ((decimal)TotalGST / 100) * (sparePart.Price * sparePart.SparePartQuantity) :
+                                ((decimal)TotalGST / 100) * sparePart.Price) : null;
+                            DbModel.QuotationSpareParts.Add(new QuotationSparePart
+                            {
+                                Quantity = sparePart.SparePartQuantity,
+                                SparePartId = sparePart.SparePartId,
+                                QuotationId = DbModel.Id,
+                                Rate = sparePart.Price,
+                                TaxApplied = sparePart.TaxApply,
+                                TaxPercent = sparePart.TaxApply ? (decimal)TotalGST : null,
+                                TaxAmount = TempTaxAmountOntheBasisofQuantity
+                            });
+                            if (sparePart.TaxApply)
+                                TotalSparePartTaxAmount += TempTaxAmountOntheBasisofQuantity.Value;
+                            TotalSparePartAmount = TotalSparePartAmount + TempRateOntheBasisofQuantity;
+                        }
+                        DbModel.TotalAmount = TotalSparePartAmount;
+                        DbModel.GSTTaxAmount = TotalSparePartTaxAmount;
+
+                        foreach (var repairingWork in entity.RepairWorkList)
+                        {
+                            DbModel.QuotationRepairings.Add(new QuotationRepairing
+                            {
+                                Rate = repairingWork.RepairingWorkPrice,
+                                RepairingId = repairingWork.RepairingWorkId,
+                                QuotationId = DbModel.Id,
+                                TaxApplied = repairingWork.TaxApply,
+                                TaxPercent = repairingWork.TaxApply ? (decimal)TotalFST : null,
+                                TaxAmount = repairingWork.TaxApply ? ((decimal)TotalFST / 100) * repairingWork.RepairingWorkPrice : null
+                            });
+                            TotalRepairingAmount = TotalRepairingAmount + repairingWork.RepairingWorkPrice;
+                            if (repairingWork.TaxApply)
+                                TotalRepairingTaxAmount += ((decimal)TotalFST / 100) * repairingWork.RepairingWorkPrice;
+                        }
+                        DbModel.TotalAmount += TotalRepairingAmount;
+                        DbModel.FederalServiceTaxAmount = TotalRepairingTaxAmount;
+                    }
                     DbModel.UpdatedBy = entity.UserId;
                     DbModel.UpdatedDate = DateTime.Now;
+                    await _quotationRepo.Change(DbModel);
+                    return new ResponseDTO() { IsSuccessful = true, Message = "Quotation updated successfully" };
+                    #endregion
                 }
-
-                return new ResponseDTO() { };
             }
             catch (Exception ex)
             {
@@ -234,10 +373,7 @@ namespace Billing.Business.Services
                         Id = x.Id,
                         WorkTypeId = x.WorkTypeId.GetHashCode(),
                         OrganizationTypeId = x.OrganizationTypeId .GetHashCode(),
-                        //RepairingWorkArray = x.QuotationRepairings.Select(x=>x.Id.ToString()).ToArray().Length > 0?
-                        //x.QuotationRepairings.Select(x => x.Id.ToString()).ToArray() : null,
-                        //SparePartArray = x.QuotationSpareParts.Select(x => x.Id.ToString()).ToArray().Length > 0 ?
-                        //x.QuotationSpareParts.Select(x => x.Id.ToString()).ToArray() : null,
+                        QuotationNo = x.QuotationNo,
                     }).FirstOrDefaultAsync();
                 return entity;
             }

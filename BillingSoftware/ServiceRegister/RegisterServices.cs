@@ -15,6 +15,7 @@ using Billing.Business.Services.ViewRenderService;
 using Billing.Business.Services.RepairingService;
 using Billing.Business.Services.UserSessionProfile;
 using Billing.Business.Services.QuotationRepairingService;
+using Billing.Business.Services.QuotationSparePartService;
 
 namespace BillingSoftware.ServiceRegister
 {
@@ -59,6 +60,7 @@ namespace BillingSoftware.ServiceRegister
             services.AddScoped<IRepairingService, RepairingService>();
             services.AddScoped<IQuotationRepairingService, QuotationRepairingService> ();
             services.AddScoped<UserSessionProfileService>();
+            services.AddScoped<IQuotationSparePartService, QuotationSparePartService>();
             #endregion
 
             #region @@@[------Repository]
@@ -70,6 +72,8 @@ namespace BillingSoftware.ServiceRegister
             services.AddScoped<ITaxRepo, TaxRepo>();
             services.AddScoped<IRepairingRepo, RepairingRepo>();
             services.AddScoped<IQuotationRepairingRepo, QuotationRepairingRepo>();
+            services.AddScoped<IQuotationSparePartRepo, QuotationSparePartRepo>();
+            services.AddScoped<IQuotationGeneratorRepo,QuotationGeneratorRepo>();
             #endregion
             services.AddAutoMapper(typeof(AutoMapperProfiles));
 

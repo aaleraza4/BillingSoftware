@@ -16,5 +16,6 @@ namespace Billing.Business.Services
         Task<bool> UpdateSparePart(SparePartDTO sparePartDTO);
         Task<bool> DeleteSparePart(long id);
         IEnumerable<SelectListItem> GetAllSpareSpartForDropdown();
+        
     }
 }

@@ -6,7 +6,8 @@
         <div class="form-row repairwork repairingwork-@RepairWork.RepairingWorkName">
             <div class="form-group col-md-4">
                 <label asp-for="@RepairWork.RepairingWorkName">Name</label>
-                <input type="text" class="form-control" data-RepairingWorkId ="@RepairWork.RepairingWorkId" 
+                <input type="text" class="form-control" data-RepairingWorkId ="@RepairWork.RepairingWorkId"
+                       data-PrimaryKeyId ="@RepairWork.QuotationRepairingWorkId" 
                 asp-for="@RepairWork.RepairingWorkName" placeholder="Enter Repairing Work" readonly>
             </div>
             <div class="form-group col-md-4">

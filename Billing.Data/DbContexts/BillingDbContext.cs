@@ -26,12 +26,13 @@ namespace Billing.Data.DbContexts
         public DbSet<QuotationSparePart> QuotationSpareParts  { get; set; }
         public DbSet<Repairing> Repairings  { get; set; }
         public DbSet<QuotationRepairing> QuotationRepairings  { get; set; }
+        public DbSet<QuotationGenerator> QuotationGenerators  { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-HIRHSNP;Database=db_BillingCompany;Trusted_Connection=True;MultipleActiveResultSets=true");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-01NOACQ\\MSSQLSERVER2019;Database=db_BillingCompany;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
     }

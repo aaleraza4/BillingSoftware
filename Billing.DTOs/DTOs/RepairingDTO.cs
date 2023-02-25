@@ -15,6 +15,7 @@ namespace Billing.DTOs.DTOs
 
     public class RepairingWorkFieldDTO
     {
+        public long QuotationRepairingWorkId { get; set; }
         public long RepairingWorkId { get; set; }
         public string RepairingWorkName { get; set; }
         public decimal RepairingWorkPrice { get; set; }

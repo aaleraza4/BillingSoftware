@@ -34,11 +34,11 @@ namespace Billing.DTOs.DTOs
         public IEnumerable<SelectListItem> CustomerList { get; set; }
         
         [Required(ErrorMessage = "This field is required")]
-        public long SparePartId { get; set; }
+        public string SparePartId { get; set; }
         public IEnumerable<SelectListItem> SparePartList { get; set; }
         
         [Required(ErrorMessage = "This field is required")]
-        public long ReparingWorkId { get; set; }
+        public string ReparingWorkId { get; set; }
         public IEnumerable<SelectListItem> RepairingWorkList { get; set; }
 
         [Required(ErrorMessage = "This field is required")]
@@ -47,11 +47,13 @@ namespace Billing.DTOs.DTOs
         
         [Required(ErrorMessage = "This field is required")]
         public long OrganizationTypeId { get; set; }
-        public string[] SparePartArray { get; set; }
-        public string[] RepairingWorkArray { get; set; }
+        public string SpareParts { get; set; }
+        public string RepairingWorks { get; set; }
         public IEnumerable<SelectListItem> OrganizationTypeList { get; set; }
         public List<SparePartFieldDTO> SparePartDTOList { get; set; }
         public List<RepairingWorkFieldDTO> RepairWorkDTOList { get; set; }
+        public string ReparingIds { get; set; }
+        public string SparepartIds { get; set; }
     }
 
 
